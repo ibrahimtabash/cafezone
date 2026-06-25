@@ -1,12 +1,15 @@
 <main class="flex-1">
     <div>
-        <section class="relative h-72 overflow-hidden"><img alt="المشروبات الساخنة"
+        <section class="relative h-72 overflow-hidden">
+            <img alt="{{ $category->name }}"
                 class="absolute inset-0 h-full w-full object-cover"
                 src="{{ Storage::url($category->image) }}">
             <div class="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent">
             </div>
-            <div class="absolute inset-0 flex flex-col items-center justify-end pb-8 text-center"><a href="/"
-                    class="mb-3 inline-flex items-center gap-1 rounded-full bg-background/80 px-3 py-1 text-xs text-foreground backdrop-blur"><svg
+            <div class="absolute inset-0 flex flex-col items-center justify-end pb-8 text-center">
+                <a href="/"
+                    class="mb-3 inline-flex items-center gap-1 rounded-full bg-background/80 px-3 py-1 text-xs text-foreground backdrop-blur">
+                    <svg
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="lucide lucide-arrow-right h-3.5 w-3.5" aria-hidden="true">
