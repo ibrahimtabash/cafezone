@@ -49,6 +49,7 @@ class CategoryPage extends Component
                 ->where('is_available', true)
                 ->orderBy('sort_order')
                 ->get(),
+            'category' => $this->category,
         ])->layout('layouts.app');
     }
 }

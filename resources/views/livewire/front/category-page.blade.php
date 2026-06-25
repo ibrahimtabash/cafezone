@@ -2,7 +2,7 @@
     <div>
         <section class="relative h-72 overflow-hidden"><img alt="المشروبات الساخنة"
                 class="absolute inset-0 h-full w-full object-cover"
-                src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&amp;q=80&amp;auto=format&amp;fit=crop">
+                src="{{ Storage::url($category->image) }}">
             <div class="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent">
             </div>
             <div class="absolute inset-0 flex flex-col items-center justify-end pb-8 text-center"><a href="/"
@@ -13,7 +13,7 @@
                         <path d="M5 12h14"></path>
                         <path d="m12 5 7 7-7 7"></path>
                     </svg> كل الأقسام</a>
-                <h1 class="font-serif text-4xl sm:text-5xl text-primary drop-shadow">المشروبات الساخنة</h1>
+                <h1 class="font-serif text-4xl sm:text-5xl text-primary drop-shadow">{{ $category->name }}</h1>
                 <p class="mt-2 max-w-md px-4 text-sm text-foreground/80">قهوة محمّصة بحب على الطريقة العربية
                     والإيطالية</p>
             </div>
