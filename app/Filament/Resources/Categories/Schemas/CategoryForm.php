@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Categories\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -17,6 +18,7 @@ class CategoryForm
                     ->required(),
                 TextInput::make('slug')
                     ->required(),
+                Textarea::make('description'),
                 FileUpload::make('image')
                     ->image()
                     ->disk('public')

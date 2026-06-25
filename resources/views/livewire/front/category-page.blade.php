@@ -17,8 +17,7 @@
                         <path d="m12 5 7 7-7 7"></path>
                     </svg> كل الأقسام</a>
                 <h1 class="font-serif text-4xl sm:text-5xl text-primary drop-shadow">{{ $category->name }}</h1>
-                <p class="mt-2 max-w-md px-4 text-sm text-foreground/80">قهوة محمّصة بحب على الطريقة العربية
-                    والإيطالية</p>
+                <p class="mt-2 max-w-md px-4 text-sm text-foreground/80">{{ $category->description }}</p>
             </div>
         </section>
         <section class="mx-auto max-w-4xl px-4 py-12">

@@ -61,8 +61,8 @@
                                 {{ $category->name }}
                             </h3>
 
-                            <p class="mt-1 text-sm text-muted-foreground">
-                                استكشف منتجات هذا القسم
+                            <p class="mt-1 text-sm text-muted-foreground line-clamp-1">
+                                {{ $category->description }}
                             </p>
 
                             <div class="mt-4 flex items-center justify-between text-sm font-semibold text-primary">
