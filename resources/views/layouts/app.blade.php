@@ -36,6 +36,7 @@
         content="تصفّح قائمة كافي زون: قهوة مختصة، بيتزا، برجر، عصائر وحلويات. اطلب أونلاين عبر واتساب.">
     <meta property="og:title" content="Zone Coffee &amp; Eatery">
     <meta property="og:description" content="تصفّح قائمة كافي زون واطلب أونلاين.">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/logo.jpeg') }}" >
 </head>
 
 <body>
@@ -85,12 +86,12 @@
     </div>
 
     <script>
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('open-whatsapp', (event) => {
-            window.open(event.url, '_blank');
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('open-whatsapp', (event) => {
+                window.open(event.url, '_blank');
+            });
         });
-    });
-</script>
+    </script>
 </body>
 
 </html>
