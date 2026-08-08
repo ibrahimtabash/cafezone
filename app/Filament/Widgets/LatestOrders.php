@@ -27,7 +27,13 @@ class LatestOrders extends TableWidget
                     ->label('رقم الطلب'),
 
                 TextColumn::make('customer_name')
-                    ->label('العميل'),
+                    ->label('العميل')->placeholder('زبون الطاولة'),
+
+                TextColumn::make('order_type')->label('النوع')->badge()->formatStateUsing(fn (string $state) => match ($state) {
+                    'dine_in' => 'داخل الكافي', 'takeaway' => 'خارجي', default => 'توصيل',
+                }),
+
+                TextColumn::make('diningTable.name')->label('الطاولة')->placeholder('—'),
 
                 TextColumn::make('total')
                     ->label('الإجمالي')

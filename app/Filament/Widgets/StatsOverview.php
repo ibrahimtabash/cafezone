@@ -17,6 +17,10 @@ class StatsOverview extends StatsOverviewWidget
         return [
             Stat::make('الطلبات', Order::count()),
 
+            Stat::make('طلبات داخل الكافي اليوم', Order::where('order_type', 'dine_in')->whereDate('created_at', today())->count()),
+
+            Stat::make('طلبات بحاجة للمتابعة', Order::whereIn('status', ['pending', 'confirmed', 'preparing'])->count()),
+
             Stat::make('التصنيفات', Category::count()),
 
             Stat::make('الأصناف', MenuItem::count()),

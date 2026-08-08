@@ -66,6 +66,17 @@
             </div>
         </header>
 
+        @php($orderContext = session('order_context', ['type' => 'delivery']))
+        <div class="border-b border-primary/10 bg-primary/5 px-4 py-2 text-center text-xs font-semibold text-primary">
+            @if(($orderContext['type'] ?? 'delivery') === 'dine_in')
+                طلبك مسجّل على {{ $orderContext['table_name'] ?? 'الطاولة' }}
+            @elseif(($orderContext['type'] ?? 'delivery') === 'takeaway')
+                طلب خارجي للاستلام من الكافي
+            @else
+                طلب توصيل خارجي
+            @endif
+        </div>
+
         {{ $slot }}
 
         <footer class="border-t border-border/60 py-8 text-center text-sm text-muted-foreground">

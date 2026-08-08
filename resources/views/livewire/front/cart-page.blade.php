@@ -1,6 +1,11 @@
 <main class="flex-1">
     <div class="mx-auto max-w-5xl px-4 py-10">
         <h1 class="font-serif text-3xl text-primary">السلة وإتمام الطلب</h1>
+        <div class="mt-4 inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+            @if($order_type === 'dine_in') الطلب داخل الكافي — {{ $dining_table_name }}
+            @elseif($order_type === 'takeaway') طلب خارجي — استلام من الكافي
+            @else طلب توصيل @endif
+        </div>
         <div class="mt-2 h-1 w-24 tatreez-border"></div>
         <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_380px]">
             <div class="space-y-3 overflow-x-hidden">
@@ -93,7 +98,11 @@
 
             <form
                 class="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] space-y-4 h-fit lg:sticky lg:top-24">
-                <h2 class="font-serif text-xl text-primary">بيانات التوصيل</h2>
+                <h2 class="font-serif text-xl text-primary">
+                    {{ $order_type === 'delivery' ? 'بيانات التوصيل' : ($order_type === 'takeaway' ? 'بيانات الاستلام' : 'تفاصيل طلب الطاولة') }}
+                </h2>
+                @error('cart') <p class="rounded-xl bg-red-50 p-3 text-sm text-red-600">{{ $message }}</p> @enderror
+                @if($order_type !== 'dine_in')
                 <label class="block">
                     <span class="text-sm font-medium text-foreground">الاسم</span>
                     <div class="mt-1">
@@ -104,6 +113,8 @@
                         @enderror
                     </div>
                 </label>
+                @endif
+                @if($order_type !== 'dine_in')
                 <label class="block">
                     <span class="text-sm font-medium text-foreground">رقم
                         الجوال</span>
@@ -115,6 +126,8 @@
                         @enderror
                     </div>
                 </label>
+                @endif
+                @if($order_type === 'delivery')
                 <label class="block">
                     <span class="text-sm font-medium text-foreground">العنوان</span>
                     <div class="mt-1">
@@ -125,6 +138,8 @@
                         @enderror
                     </div>
                 </label>
+                @endif
+                @if($order_type === 'delivery')
                 <label class="block">
                     <span class="text-sm font-medium text-foreground">اكتب ملاحظتك هنا!</span>
                     <div class="mt-1">
@@ -159,6 +174,7 @@
                         @enderror
                     </div>
                 </label>
+                @endif
                 <div class="border-t border-border pt-4 space-y-1 text-sm">
 
                     {{-- <div class="flex justify-between">
@@ -180,10 +196,12 @@
                         <span>{{ number_format($this->subtotal, 2) }} ₪</span>
                     </div>
 
+                    @if($order_type === 'delivery')
                     <div class="flex justify-between">
                         <span class="text-muted-foreground">التوصيل</span>
                         <span>{{ number_format($this->delivery_fee, 2) }} ₪</span>
                     </div>
+                    @endif
 
                     <div class="flex justify-between font-serif text-xl text-primary pt-2">
                         <span>الإجمالي</span>
@@ -192,7 +210,7 @@
                 </div>
                 <button wire:click="placeOrder" wire:loading.attr="disabled" wire:target="placeOrder" type="button"
                     class="w-full inline-flex items-center justify-center gap-2 rounded-full btn-hero px-6 py-3 font-semibold">
-                    <span wire:loading.remove wire:target="placeOrder">إرسال الطلب</span>
+                    <span wire:loading.remove wire:target="placeOrder">حفظ الطلب وإرساله عبر واتساب</span>
                     <span wire:loading wire:target="placeOrder">جاري الإرسال...</span>
                 </button>
                 {{-- <button type="submit"

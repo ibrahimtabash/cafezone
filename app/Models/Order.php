@@ -10,6 +10,8 @@ class Order extends Model
 {
     protected $fillable = [
         'order_number',
+        'order_type',
+        'dining_table_id',
         'customer_name',
         'customer_phone',
         'delivery_area_id',
@@ -30,6 +32,11 @@ class Order extends Model
     public function deliveryArea(): BelongsTo
     {
         return $this->belongsTo(DeliveryArea::class);
+    }
+
+    public function diningTable(): BelongsTo
+    {
+        return $this->belongsTo(DiningTable::class);
     }
 
     public function items(): HasMany

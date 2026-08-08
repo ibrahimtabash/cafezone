@@ -14,39 +14,48 @@ class OrderForm
         return $schema
             ->components([
                 TextInput::make('order_number')
+                    ->label('رقم الطلب')
                     ->required(),
+                Select::make('order_type')->label('نوع الطلب')->options([
+                    'dine_in' => 'داخل الكافي', 'takeaway' => 'طلب خارجي', 'delivery' => 'توصيل',
+                ])->required(),
+                Select::make('dining_table_id')->label('الطاولة')->relationship('diningTable', 'name'),
                 TextInput::make('customer_name')
-                    ->required(),
+                    ->label('اسم العميل'),
                 TextInput::make('customer_phone')
-                    ->tel()
-                    ->required(),
+                    ->label('رقم الهاتف')->tel(),
                 Select::make('delivery_area_id')
                     ->relationship('deliveryArea', 'name')
-                    ->required(),
+                    ->label('منطقة التوصيل'),
                 Textarea::make('address')
-                    ->required()
+                    ->label('العنوان')
                     ->columnSpanFull(),
                 TextInput::make('subtotal')
+                    ->label('المجموع')
                     ->required()
                     ->numeric(),
                 TextInput::make('delivery_fee')
+                    ->label('رسوم التوصيل')
                     ->required()
                     ->numeric()
                     ->default(0.0),
                 TextInput::make('total')
+                    ->label('الإجمالي')
                     ->required()
                     ->numeric(),
                 Textarea::make('notes')
+                    ->label('الملاحظات')
                     ->default(null)
                     ->columnSpanFull(),
                 Select::make('status')
+                    ->label('الحالة')
                     ->options([
-            'pending' => 'Pending',
-            'confirmed' => 'Confirmed',
-            'preparing' => 'Preparing',
-            'on_the_way' => 'On the way',
-            'completed' => 'Completed',
-            'cancelled' => 'Cancelled',
+            'pending' => 'جديد',
+            'confirmed' => 'مؤكد',
+            'preparing' => 'قيد التحضير',
+            'on_the_way' => 'في الطريق / جاهز',
+            'completed' => 'مكتمل',
+            'cancelled' => 'ملغي',
         ])
                     ->default('pending')
                     ->required(),
