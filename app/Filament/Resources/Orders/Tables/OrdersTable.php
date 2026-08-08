@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Orders\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -74,6 +75,7 @@ class OrdersTable
                 ]),
             ])
             ->recordActions([
+                ViewAction::make()->label('التفاصيل'),
                 Action::make('whatsapp')->label('واتساب')->icon('heroicon-o-chat-bubble-left-right')
                     ->visible(fn (Order $record) => filled($record->customer_phone))
                     ->url(function (Order $record): string {

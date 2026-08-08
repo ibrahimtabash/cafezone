@@ -141,10 +141,10 @@
                 @endif
                 @if($order_type === 'delivery')
                 <label class="block">
-                    <span class="text-sm font-medium text-foreground">اكتب ملاحظتك هنا!</span>
+                    <span class="text-sm font-medium text-foreground">ملاحظات الطلب (اختياري)</span>
                     <div class="mt-1">
                         {{-- <input class="field" placeholder="مثال: رام الله — البالوع" value=""> --}}
-                        <textarea wire:model="notes" placeholder="مثال: زيادة طحينية — بدون شطة .." class="field"></textarea>
+                        <textarea wire:model="notes" placeholder="مثال: بدون سكر، بدون شطة، أو أي طلب خاص…" class="field" rows="3"></textarea>
                     </div>
                 </label>
                 {{-- <label class="block">

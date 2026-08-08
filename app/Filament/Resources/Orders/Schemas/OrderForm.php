@@ -44,7 +44,9 @@ class OrderForm
                     ->required()
                     ->numeric(),
                 Textarea::make('notes')
-                    ->label('الملاحظات')
+                    ->label('ملاحظة الطلب')
+                    ->helperText('يمكن كتابة أو تعديل الملاحظة لجميع أنواع الطلبات، بما فيها طلبات الطاولات داخل الكافي.')
+                    ->rows(4)
                     ->default(null)
                     ->columnSpanFull(),
                 Select::make('status')
