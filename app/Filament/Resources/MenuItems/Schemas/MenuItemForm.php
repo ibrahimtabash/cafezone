@@ -30,7 +30,8 @@ class MenuItemForm
                 FileUpload::make('image')
                     ->image()
                     ->disk('public')
-                    ->directory('items'),
+                    ->directory('items')
+                    ->maxSize(10240),
                 Toggle::make('is_available')
                     ->required(),
                 Toggle::make('is_featured')
