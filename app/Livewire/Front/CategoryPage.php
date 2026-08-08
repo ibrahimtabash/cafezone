@@ -47,7 +47,7 @@ class CategoryPage extends Component
             'items' => $this->category
                 ->menuItems()
                 ->where('is_available', true)
-                ->orderBy('sort_order')
+                ->latest()
                 ->get(),
             'category' => $this->category,
         ])->layout('layouts.app');
