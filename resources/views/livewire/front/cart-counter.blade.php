@@ -1,4 +1,5 @@
 <a href="{{ route('cart.index') }}"
+    data-cart-target
     class="relative inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-primary-foreground btn-hero">
 
     <svg xmlns="http://www.w3.org/2000/svg"

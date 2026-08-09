@@ -26,9 +26,11 @@
                 @foreach ($items as $item)
 
                 <div
+                    data-menu-item-card
                     class="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition hover:border-primary/40 hover:shadow-[var(--shadow-soft)]">
                     <div class="relative h-44 overflow-hidden">
                         <img alt="{{ $item->name }}" loading="lazy"
+                            data-menu-item-image
                             class="h-full w-full cursor-zoom-in object-cover transition duration-500 group-hover:scale-105"
                             src="{{ Storage::url($item->image) }}"
                             x-on:click="imageUrl = @js(Storage::url($item->image)); imageName = @js($item->name); imageOpen = true">
@@ -60,6 +62,7 @@
                         </div>
                         <button
                             wire:click="addToCart({{ $item->id }})"
+                            x-on:click="window.flyToCart($event, @js(Storage::url($item->image)))"
                             class="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition bg-primary text-primary-foreground hover:opacity-90">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

@@ -85,15 +85,44 @@
         </footer>
     </div>
 
-    <div x-data="{ show: false, message: '' }"
+    <div x-data="{ show: false, message: '', timer: null }"
         x-on:toast.window="
-        message = $event.detail.message;
-        show = true;
-        setTimeout(() => show = false, 2500);
-    "
-        x-show="show" x-transition
-        class="fixed bottom-5 left-5 bg-primary text-white px-4 py-2 rounded-xl shadow-lg z-50">
-        <span x-text="message"></span>
+            clearTimeout(timer);
+            show = false;
+            $nextTick(() => {
+                message = $event.detail.message;
+                show = true;
+                timer = setTimeout(() => show = false, 3200);
+            });
+        "
+        x-show="show"
+        x-cloak
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 translate-y-5 scale-95"
+        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 translate-y-3 scale-95"
+        class="fixed bottom-5 left-1/2 z-50 w-[calc(100%_-_2rem)] max-w-sm -translate-x-1/2 overflow-hidden rounded-2xl border border-gold/50 bg-card shadow-[0_18px_50px_rgba(73,32,24,.28)] sm:left-5 sm:translate-x-0">
+        <div class="flex items-center gap-3 p-4">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                    <path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+                <div class="text-sm font-extrabold text-primary">تمت الإضافة للسلة</div>
+                <div class="mt-0.5 truncate text-xs text-muted-foreground" x-text="message"></div>
+            </div>
+            <button type="button" x-on:click="show = false; clearTimeout(timer)"
+                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition hover:bg-secondary hover:text-primary"
+                aria-label="إغلاق الإشعار">✕</button>
+        </div>
+        <div class="h-1 w-full bg-secondary">
+            <div class="cart-toast-progress h-full bg-gradient-to-l from-primary via-gold to-primary"></div>
+        </div>
     </div>
 
     <script>

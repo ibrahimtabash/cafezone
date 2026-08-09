@@ -18,6 +18,26 @@
   display: none !important;
 }
 
+.cart-toast-progress {
+  transform-origin: right;
+  animation: cart-toast-countdown 3.2s linear forwards;
+}
+
+@keyframes cart-toast-countdown {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+.cart-receive-pulse {
+  animation: cart-receive-pulse .55s cubic-bezier(.2, .85, .3, 1);
+}
+
+@keyframes cart-receive-pulse {
+  0%, 100% { transform: scale(1); }
+  35% { transform: scale(1.16) rotate(-3deg); box-shadow: 0 0 0 0 rgb(218 165 72 / .55); }
+  70% { transform: scale(.96) rotate(2deg); box-shadow: 0 0 0 12px rgb(218 165 72 / 0); }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
