@@ -1,4 +1,5 @@
-<main class="flex-1">
+<main class="flex-1" x-data="{ imageOpen: false, imageUrl: '', imageName: '' }"
+    x-on:keydown.escape.window="imageOpen = false">
     <div>
         <section class="relative h-72 overflow-hidden">
             <img alt="{{ $category->name }}"
@@ -28,10 +29,24 @@
                     class="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition hover:border-primary/40 hover:shadow-[var(--shadow-soft)]">
                     <div class="relative h-44 overflow-hidden">
                         <img alt="{{ $item->name }}" loading="lazy"
-                            class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                            src="{{ Storage::url($item->image) }}">
-                        <div class="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent">
+                            class="h-full w-full cursor-zoom-in object-cover transition duration-500 group-hover:scale-105"
+                            src="{{ Storage::url($item->image) }}"
+                            x-on:click="imageUrl = @js(Storage::url($item->image)); imageName = @js($item->name); imageOpen = true">
+                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent">
                         </div>
+                        <button type="button"
+                            x-on:click="imageUrl = @js(Storage::url($item->image)); imageName = @js($item->name); imageOpen = true"
+                            class="absolute top-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-black/55 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-primary focus:outline-none focus:ring-2 focus:ring-white"
+                            aria-label="تكبير صورة {{ $item->name }}" title="تكبير الصورة">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                                <path d="M11 8v6"></path>
+                                <path d="M8 11h6"></path>
+                            </svg>
+                        </button>
                         <div class="absolute bottom-2 left-2 rounded-full bg-background/85 px-3 py-1 backdrop-blur">
                             <span class="font-serif text-base text-primary">{{ $item->price }}</span><span
                                 class="ms-1 text-[10px] text-muted-foreground">₪</span>
@@ -59,5 +74,20 @@
 
             </div>
         </section>
+    </div>
+
+    <div x-cloak x-show="imageOpen" x-transition.opacity
+        x-on:click.self="imageOpen = false"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 sm:p-8"
+        role="dialog" aria-modal="true" x-bind:aria-label="'صورة ' + imageName">
+        <button type="button" x-on:click="imageOpen = false"
+            class="absolute top-4 right-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-2xl text-white backdrop-blur transition hover:bg-white/25 focus:outline-none focus:ring-2 focus:ring-white"
+            aria-label="إغلاق الصورة">✕</button>
+
+        <div x-show="imageOpen" x-transition.scale.origin.center class="flex max-h-full max-w-5xl flex-col items-center gap-3">
+            <img x-bind:src="imageUrl" x-bind:alt="imageName"
+                class="max-h-[82vh] max-w-full rounded-2xl object-contain shadow-2xl">
+            <div x-text="imageName" class="rounded-full bg-black/50 px-5 py-2 text-sm font-semibold text-white"></div>
+        </div>
     </div>
 </main>
