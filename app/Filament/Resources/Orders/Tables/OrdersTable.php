@@ -54,7 +54,8 @@ class OrdersTable
                 SelectColumn::make('status')->label('الحالة')->options([
                     'pending' => 'جديد', 'confirmed' => 'مؤكد', 'preparing' => 'قيد التحضير',
                     'on_the_way' => 'في الطريق / جاهز', 'completed' => 'مكتمل', 'cancelled' => 'ملغي',
-                ])->selectablePlaceholder(false),
+                ])->selectablePlaceholder(false)
+                    ->disabled(fn (): bool => auth()->user()?->canOnlyViewOrders() === true),
                 TextColumn::make('created_at')
                     ->label('وقت الطلب')->dateTime('Y-m-d h:i A')
                     ->sortable()
@@ -77,7 +78,7 @@ class OrdersTable
             ->recordActions([
                 ViewAction::make()->label('التفاصيل'),
                 Action::make('whatsapp')->label('واتساب')->icon('heroicon-o-chat-bubble-left-right')
-                    ->visible(fn (Order $record) => filled($record->customer_phone))
+                    ->visible(fn (Order $record) => auth()->user()?->isAdmin() === true && filled($record->customer_phone))
                     ->url(function (Order $record): string {
                         $phone = preg_replace('/\D+/', '', $record->customer_phone);
                         $message = "مرحباً {$record->customer_name}، تحديث طلبك رقم {$record->order_number}: ";

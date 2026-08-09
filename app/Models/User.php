@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'role', 'is_admin'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
@@ -29,12 +29,29 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    public function setRoleAttribute(string $role): void
+    {
+        $this->attributes['role'] = $role;
+        $this->attributes['is_admin'] = $role === 'admin';
     }
 
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->is_admin;
+        return in_array($this->role, ['admin', 'orders_viewer'], true) || $this->is_admin;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin' || (bool) $this->is_admin;
+    }
+
+    public function canOnlyViewOrders(): bool
+    {
+        return $this->role === 'orders_viewer' && ! $this->isAdmin();
     }
 }

@@ -12,6 +12,11 @@ class StatsOverview extends StatsOverviewWidget
 {
     protected int|string|array $columnSpan = 'full';
     protected static ?int $sort = 1;
+
+    public static function canView(): bool
+    {
+        return auth()->user()?->isAdmin() === true;
+    }
     protected function getStats(): array
     {
         return [

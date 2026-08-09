@@ -26,6 +26,11 @@ class DiningTableResource extends Resource
     protected static ?string $modelLabel = 'طاولة';
     protected static ?string $pluralModelLabel = 'الطاولات';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->isAdmin() === true;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema->components([

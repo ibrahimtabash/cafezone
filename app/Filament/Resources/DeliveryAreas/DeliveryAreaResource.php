@@ -22,6 +22,11 @@ class DeliveryAreaResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->isAdmin() === true;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return DeliveryAreaForm::configure($schema);
