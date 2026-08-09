@@ -33,16 +33,19 @@ class OrderForm
                 TextInput::make('subtotal')
                     ->label('المجموع')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->suffix('₪'),
                 TextInput::make('delivery_fee')
                     ->label('رسوم التوصيل')
                     ->required()
                     ->numeric()
+                    ->suffix('₪')
                     ->default(0.0),
                 TextInput::make('total')
                     ->label('الإجمالي')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->suffix('₪'),
                 Textarea::make('notes')
                     ->label('ملاحظة الطلب')
                     ->helperText('يمكن كتابة أو تعديل الملاحظة لجميع أنواع الطلبات، بما فيها طلبات الطاولات داخل الكافي.')

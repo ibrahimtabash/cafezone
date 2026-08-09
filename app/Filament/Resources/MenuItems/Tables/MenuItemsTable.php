@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class MenuItemsTable
@@ -17,19 +18,25 @@ class MenuItemsTable
         return $table
             ->columns([
                 TextColumn::make('category.name')
+                    ->label('التصنيف')
                     ->searchable(),
                 TextColumn::make('name')
+                    ->label('اسم العنصر')
                     ->searchable(),
                 TextColumn::make('price')
-                    ->money()
+                    ->label('السعر')
+                    ->money('ILS')
                     ->sortable(),
                 ImageColumn::make('image')
+                    ->label('الصورة')
                     ->disk('public')
                     ->size(50)
                     ->circular(),
                 IconColumn::make('is_available')
+                    ->label('متاح')
                     ->boolean(),
                 IconColumn::make('is_featured')
+                    ->label('مميز')
                     ->boolean(),
                 TextColumn::make('sort_order')
                     ->numeric()
@@ -44,7 +51,12 @@ class MenuItemsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('category_id')
+                    ->label('فلترة حسب التصنيف')
+                    ->relationship('category', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->placeholder('كل التصنيفات'),
             ])
             ->recordActions([
                 EditAction::make(),

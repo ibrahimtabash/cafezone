@@ -19,6 +19,7 @@ class DeliveryAreasTable
                     ->searchable(),
                 TextColumn::make('delivery_fee')
                     ->numeric()
+                    ->suffix(' ₪')
                     ->sortable(),
                 IconColumn::make('is_active')
                     ->boolean(),

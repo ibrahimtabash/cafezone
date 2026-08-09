@@ -27,7 +27,7 @@ class MenuItemForm
                 TextInput::make('price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->suffix('₪'),
                 FileUpload::make('image')
                     ->label('الصورة')
                     ->image()

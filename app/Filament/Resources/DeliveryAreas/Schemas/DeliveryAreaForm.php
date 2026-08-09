@@ -17,6 +17,7 @@ class DeliveryAreaForm
                 TextInput::make('delivery_fee')
                     ->required()
                     ->numeric()
+                    ->suffix('₪')
                     ->default(0.0),
                 Toggle::make('is_active')
                     ->required(),
