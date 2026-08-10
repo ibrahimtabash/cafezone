@@ -5,6 +5,7 @@ use App\Livewire\Front\CategoryPage;
 use App\Livewire\Front\HomePage;
 use App\Models\DiningTable;
 use App\Http\Controllers\Admin\ExportMenuItemsController;
+use App\Http\Controllers\Admin\ExportDiningTablesController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -40,3 +41,7 @@ Route::get('/qr/takeaway', fn () => view('qr', [
 Route::get('/admin/menu-items/export/excel', ExportMenuItemsController::class)
     ->middleware('auth')
     ->name('admin.menu-items.export');
+
+Route::get('/admin/dining-tables/export/excel', ExportDiningTablesController::class)
+    ->middleware('auth')
+    ->name('admin.dining-tables.export');
