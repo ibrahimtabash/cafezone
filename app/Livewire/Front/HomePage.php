@@ -12,7 +12,8 @@ class HomePage extends Component
         $categories = Category::query()
             ->where('is_active', true)
             ->withCount('menuItems')
-            ->latest()
+            ->orderBy('sort_order')
+            ->orderBy('id')
             ->get();
         return view('livewire.front.home-page', [
             'categories' => $categories,
