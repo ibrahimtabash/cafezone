@@ -2,7 +2,7 @@
     <div class="overflow-hidden">
         <section class="relative isolate">
             <div class="absolute inset-0 -z-10"><img alt="" class="h-full w-full object-cover opacity-40"
-                    src="{{ asset('assets/images/hero.webp') }}">
+                    src="{{ asset('assets/images/hero-image.webp') }}">
                 <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent,oklch(0.18_0.03_40)_75%)]">
                 </div>
             </div>
