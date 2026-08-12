@@ -17,23 +17,30 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('اسم التصنيف')
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label('معرّف الرابط')
                     ->searchable(),
                 ImageColumn::make('image')
+                    ->label('الصورة')
                     ->disk('public')
                     ->size(50)
                     ->circular(),
                 TextColumn::make('sort_order')
+                    ->label('ترتيب العرض')
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('is_active')
+                    ->label('نشط')
                     ->boolean(),
                 TextColumn::make('created_at')
+                    ->label('تاريخ الإنشاء')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('آخر تحديث')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

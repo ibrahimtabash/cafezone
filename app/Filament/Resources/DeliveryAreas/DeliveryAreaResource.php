@@ -20,6 +20,12 @@ class DeliveryAreaResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'مناطق التوصيل';
+
+    protected static ?string $modelLabel = 'منطقة توصيل';
+
+    protected static ?string $pluralModelLabel = 'مناطق التوصيل';
+
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function canViewAny(): bool

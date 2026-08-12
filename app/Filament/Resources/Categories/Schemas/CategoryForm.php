@@ -16,10 +16,14 @@ class CategoryForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('اسم التصنيف')
                     ->required(),
                 TextInput::make('slug')
+                    ->label('معرّف الرابط')
+                    ->helperText('يُستخدم داخل رابط صفحة التصنيف، مثل: hot-drinks')
                     ->required(),
-                Textarea::make('description'),
+                Textarea::make('description')
+                    ->label('الوصف'),
                 FileUpload::make('image')
                     ->label('الصورة')
                     ->image()
@@ -34,10 +38,12 @@ class CategoryForm
                     ->saveUploadedFileUsing(fn ($file): string => CompressedImageUploader::store($file, 'categories'))
                     ->helperText('تُضغط الصورة تلقائيًا وتُحفظ بصيغة WebP. الحد الأقصى قبل الضغط 10MB.'),
                 TextInput::make('sort_order')
+                    ->label('ترتيب العرض')
                     ->required()
                     ->numeric()
                     ->default(0),
                 Toggle::make('is_active')
+                    ->label('نشط')
                     ->required(),
             ]);
     }

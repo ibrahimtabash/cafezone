@@ -20,6 +20,12 @@ class MenuItemResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'المنتجات';
+
+    protected static ?string $modelLabel = 'منتج';
+
+    protected static ?string $pluralModelLabel = 'المنتجات';
+
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function canViewAny(): bool

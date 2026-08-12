@@ -39,13 +39,16 @@ class MenuItemsTable
                     ->label('مميز')
                     ->boolean(),
                 TextColumn::make('sort_order')
+                    ->label('ترتيب العرض')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label('تاريخ الإنشاء')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('آخر تحديث')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

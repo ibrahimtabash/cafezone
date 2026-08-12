@@ -6,6 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\FontProviders\GoogleFontProvider;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Resources\Orders\OrderResource;
 use Filament\Panel;
@@ -28,6 +29,12 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandName('كافيه زون')
+            ->font(
+                'Alexandria',
+                'https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&display=swap',
+                GoogleFontProvider::class,
+            )
             ->login()
             ->profile()
             ->homeUrl(fn (): string => auth()->user()?->isAdmin()

@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{-- <link rel="stylesheet" href="/assets/styles-Dn-bKRFa.css" data-precedence="default"> --}}
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=Playfair+Display:wght@600;700;800&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&amp;display=swap"
         data-precedence="default">
-    <meta name="author" content="Zone Coffee">
+    <meta name="author" content="كافيه زون">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Zone Coffee &amp; Eatery — منيو وطلبات">
+    <meta name="twitter:title" content="كافيه زون — قائمة الطعام والطلبات">
     <meta name="twitter:description"
         content="منيو كافي زون — قهوة مختصة، بيتزا، برجر، حلويات وعصائر. اطلب أونلاين عبر واتساب.">
     {{-- <meta name="twitter:image"
@@ -19,22 +19,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 
-    <style>
-        @font-face {
-            font-family: 'CameraPlainVariable';
-            src: url('https://cdn.gpteng.co/mcp-widgets/v1/fonts/CameraPlainVariable.woff2') format('woff2');
-            font-weight: 100 900;
-            font-style: normal;
-            font-display: swap;
-        }
-    </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <meta property="og:image" content="">
-    <title>Zone Coffee &amp; Eatery — منيو الكافي</title>
+    <title>كافيه زون — قائمة الطعام</title>
     <meta name="description"
         content="تصفّح قائمة كافي زون: قهوة مختصة، بيتزا، برجر، عصائر وحلويات. اطلب أونلاين عبر واتساب.">
-    <meta property="og:title" content="Zone Coffee &amp; Eatery">
+    <meta property="og:title" content="كافيه زون">
     <meta property="og:description" content="تصفّح قائمة كافي زون واطلب أونلاين.">
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/logo.jpeg') }}" >
 </head>
@@ -52,8 +43,8 @@
                         <img src="{{ asset('assets/images/logo2026.png') }}" alt="logo">
                     </span>
                     <div class="leading-tight">
-                        <div class="font-serif text-lg text-primary">Zone</div>
-                        <div class="text-[10px] tracking-[0.3em] text-muted-foreground">COFFEE &amp; EATERY</div>
+                        <div class="font-serif text-lg text-primary">زون</div>
+                        <div class="text-[10px] tracking-[0.3em] text-muted-foreground">قهوة ومأكولات</div>
                     </div>
                 </a>
                 <nav class="flex items-center gap-1 sm:gap-3 text-sm">
@@ -80,7 +71,7 @@
         {{ $slot }}
 
         <footer class="border-t border-border/60 py-8 text-center text-sm text-muted-foreground">
-            <div class="font-serif text-primary text-lg">Zone Coffee &amp; Eatery</div>
+            <div class="font-serif text-primary text-lg">كافيه زون</div>
             <p class="mt-1">حيث تمتزج القهوة بالثقافة، والنكهة تُحكى كرواية تلامس القلب.</p>
         </footer>
     </div>

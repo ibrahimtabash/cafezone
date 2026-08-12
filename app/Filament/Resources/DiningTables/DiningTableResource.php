@@ -22,7 +22,7 @@ class DiningTableResource extends Resource
 {
     protected static ?string $model = DiningTable::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQrCode;
-    protected static ?string $navigationLabel = 'طاولات وQR';
+    protected static ?string $navigationLabel = 'الطاولات ورموز QR';
     protected static ?string $modelLabel = 'طاولة';
     protected static ?string $pluralModelLabel = 'الطاولات';
 
@@ -49,7 +49,7 @@ class DiningTableResource extends Resource
             TextColumn::make('capacity')->label('المقاعد'),
             TextColumn::make('orders_count')->label('عدد الطلبات')->counts('orders'),
             IconColumn::make('is_active')->label('فعالة')->boolean(),
-            TextColumn::make('qr')->label('QR')->state(fn () => 'عرض وطباعة')
+            TextColumn::make('qr')->label('رمز QR')->state(fn () => 'عرض وطباعة')
                 ->url(fn (DiningTable $record) => route('qr.table', $record))->openUrlInNewTab(),
         ])->recordActions([EditAction::make()]);
     }

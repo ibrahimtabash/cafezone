@@ -13,13 +13,16 @@ class DeliveryAreaForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('اسم المنطقة')
                     ->required(),
                 TextInput::make('delivery_fee')
+                    ->label('رسوم التوصيل')
                     ->required()
                     ->numeric()
                     ->suffix('₪')
                     ->default(0.0),
                 Toggle::make('is_active')
+                    ->label('نشطة')
                     ->required(),
             ]);
     }

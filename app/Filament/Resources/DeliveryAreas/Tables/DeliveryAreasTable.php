@@ -16,18 +16,23 @@ class DeliveryAreasTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('اسم المنطقة')
                     ->searchable(),
                 TextColumn::make('delivery_fee')
+                    ->label('رسوم التوصيل')
                     ->numeric()
                     ->suffix(' ₪')
                     ->sortable(),
                 IconColumn::make('is_active')
+                    ->label('نشطة')
                     ->boolean(),
                 TextColumn::make('created_at')
+                    ->label('تاريخ الإنشاء')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('آخر تحديث')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -17,14 +17,18 @@ class MenuItemForm
         return $schema
             ->components([
                 Select::make('category_id')
+                    ->label('التصنيف')
                     ->relationship('category', 'name')
                     ->required(),
                 TextInput::make('name')
+                    ->label('اسم المنتج')
                     ->required(),
                 Textarea::make('description')
+                    ->label('الوصف')
                     ->default(null)
                     ->columnSpanFull(),
                 TextInput::make('price')
+                    ->label('السعر')
                     ->required()
                     ->numeric()
                     ->suffix('₪'),
@@ -42,10 +46,13 @@ class MenuItemForm
                     ->saveUploadedFileUsing(fn ($file): string => CompressedImageUploader::store($file, 'items'))
                     ->helperText('تُضغط الصورة تلقائيًا وتُحفظ بصيغة WebP. الحد الأقصى قبل الضغط 10MB.'),
                 Toggle::make('is_available')
+                    ->label('متاح للطلب')
                     ->required(),
                 Toggle::make('is_featured')
+                    ->label('منتج مميز')
                     ->required(),
                 TextInput::make('sort_order')
+                    ->label('ترتيب العرض')
                     ->required()
                     ->numeric()
                     ->default(0),
