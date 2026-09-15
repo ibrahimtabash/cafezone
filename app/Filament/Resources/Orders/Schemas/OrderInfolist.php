@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Models\Order;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -19,10 +20,7 @@ class OrderInfolist
                     'takeaway' => 'طلب خارجي / استلام',
                     default => 'توصيل',
                 }),
-                TextEntry::make('status')->label('الحالة')->badge()->formatStateUsing(fn (string $state) => match ($state) {
-                    'pending' => 'جديد', 'confirmed' => 'مؤكد', 'preparing' => 'قيد التحضير',
-                    'on_the_way' => 'في الطريق / جاهز', 'completed' => 'مكتمل', 'cancelled' => 'ملغي',
-                }),
+                TextEntry::make('status')->label('الحالة')->badge()->formatStateUsing(fn (Order $record) => $record->statusMessage()),
                 TextEntry::make('created_at')->label('وقت الطلب')->dateTime('Y-m-d h:i A'),
                 TextEntry::make('diningTable.name')->label('الطاولة')->placeholder('—'),
                 TextEntry::make('customer_name')->label('اسم العميل')->placeholder('زبون الطاولة'),
@@ -42,6 +40,12 @@ class OrderInfolist
             ]),
 
             Section::make('الحساب')->schema([
+                TextEntry::make('payment_details.name')->label('طريقة الدفع'),
+                TextEntry::make('payment_details.account_name')->label('صاحب الحساب'),
+                TextEntry::make('payment_details.account_number')->label('رقم الحساب / المحفظة'),
+                TextEntry::make('payment_status')->label('حالة الدفع')->formatStateUsing(fn ($state) => ['pending' => 'بانتظار تأكيد الكاشير', 'confirmed' => 'مؤكد', 'rejected' => 'مرفوض', 'unpaid' => 'غير مدفوع'][$state] ?? $state),
+                TextEntry::make('payment_note')->label('ملاحظة الدفع'),
+                TextEntry::make('payment_confirmed_at')->label('وقت تأكيد الدفع')->dateTime(),
                 TextEntry::make('subtotal')->label('مجموع الأصناف')->money('ILS'),
                 TextEntry::make('delivery_fee')->label('رسوم التوصيل')->money('ILS'),
                 TextEntry::make('total')->label('الإجمالي النهائي')->money('ILS')->weight('bold'),

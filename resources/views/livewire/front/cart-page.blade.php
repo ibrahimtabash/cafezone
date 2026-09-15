@@ -96,42 +96,53 @@
                 @endforelse
             </div>
 
-            <form
+            <form wire:submit="placeOrder"
                 class="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] space-y-4 h-fit lg:sticky lg:top-24">
+                <h2 class="text-xl font-bold">بيانات الدفع</h2>
+                <label class="block">طريقة الدفع
+                    <select class="field" wire:model.live="payment_method_id">
+                        <option value="">اختر البنك أو المحفظة</option>
+                        @foreach($paymentMethods as $method)<option value="{{ $method->id }}">{{ $method->name }}</option>@endforeach
+                    </select>
+                </label>
+                @error('payment_method_id')<p class="text-red-600">{{ $message }}</p>@enderror
+                @if($paymentMethods->isEmpty())<p role="alert">لا توجد طرق دفع متاحة حالياً. يرجى مراجعة الكاشير.</p>@endif
+                @if($selectedMethod = $paymentMethods->firstWhere('id', $payment_method_id))
+                    <div class="rounded-xl border border-border p-4 space-y-2">
+                        <p>صاحب الحساب: {{ $selectedMethod->account_name }}</p>
+                        <p>رقم الحساب / المحفظة: <bdi>{{ $selectedMethod->account_number }}</bdi></p>
+                        <p>{{ $selectedMethod->instructions }}</p>
+                        @if($selectedMethod->qr_code)<img class="mx-auto h-44 w-44 object-contain" src="{{ Storage::disk('public')->url($selectedMethod->qr_code) }}" alt="رمز QR للدفع">@endif
+                        <p>حوّل المبلغ الإجمالي ثم أرفق صورة إثبات الدفع أدناه.</p>
+                    </div>
+                @endif
                 <h2 class="font-serif text-xl text-primary">
                     {{ $order_type === 'delivery' ? 'بيانات التوصيل' : ($order_type === 'takeaway' ? 'بيانات الاستلام' : 'تفاصيل طلب الطاولة') }}
                 </h2>
                 @error('cart') <p class="rounded-xl bg-red-50 p-3 text-sm text-red-600">{{ $message }}</p> @enderror
-                @if($order_type !== 'dine_in')
                 <label class="block">
-                    <span class="text-sm font-medium text-foreground">الاسم</span>
+                    <span class="text-sm font-medium text-foreground">الاسم (اختياري)</span>
                     <div class="mt-1">
-                        {{-- <input class="field" placeholder="اسمك الكامل" value=""> --}}
                         <input wire:model="customer_name" placeholder="اسمك الكامل" class="field" />
                         @error('customer_name')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                 </label>
-                @endif
-                @if($order_type !== 'dine_in')
                 <label class="block">
                     <span class="text-sm font-medium text-foreground">رقم
                         الجوال</span>
                     <div class="mt-1">
-                        {{-- <input class="field" placeholder="05X XXX XXXX" dir="ltr" value=""> --}}
                         <input wire:model="customer_phone" placeholder="05X XXX XXXX" dir="ltr" class="field" />
                         @error('customer_phone')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
                 </label>
-                @endif
                 @if($order_type === 'delivery')
                 <label class="block">
                     <span class="text-sm font-medium text-foreground">العنوان</span>
                     <div class="mt-1">
-                        {{-- <input class="field" placeholder="الحي، الشارع، رقم البناية" value=""> --}}
                         <input wire:model="address" placeholder="الحي، الشارع، رقم البناية" class="field" />
                         @error('address')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
@@ -143,18 +154,9 @@
                 <label class="block">
                     <span class="text-sm font-medium text-foreground">ملاحظات الطلب (اختياري)</span>
                     <div class="mt-1">
-                        {{-- <input class="field" placeholder="مثال: رام الله — البالوع" value=""> --}}
                         <textarea wire:model="notes" placeholder="مثال: بدون سكر، بدون شطة، أو أي طلب خاص…" class="field" rows="3"></textarea>
                     </div>
                 </label>
-                {{-- <label class="block">
-                    <span class="text-sm font-medium text-foreground">سعر التوصيل
-                        (₪)</span>
-                    <div class="mt-1">
-                        <input min="0" class="field" placeholder="0" dir="ltr" type="number"
-                            value="">
-                    </div>
-                </label> --}}
                 <label class="block">
                     <span class="text-sm font-medium text-foreground">منطقة التوصيل</span>
 
@@ -175,22 +177,16 @@
                     </div>
                 </label>
                 @endif
+                <label class="block">إرفاق إشعار الدفع (JPG / PNG / WebP حتى 5 MB)
+                    <input class="field" type="file" accept="image/jpeg,image/png,image/webp" wire:model="payment_receipt">
+                </label>
+                <label class="block">أو تصوير إشعار الدفع
+                    <input class="field" type="file" accept="image/*" capture="environment" wire:model="payment_receipt">
+                </label>
+                <p wire:loading wire:target="payment_receipt">جاري رفع إثبات الدفع…</p>
+                @error('payment_receipt')<p class="text-red-600">{{ $message }}</p>@enderror
+                @if($payment_receipt && !$errors->has('payment_receipt'))<p class="text-green-700">تم إرفاق إثبات الدفع.</p>@endif
                 <div class="border-t border-border pt-4 space-y-1 text-sm">
-
-                    {{-- <div class="flex justify-between">
-                        <span class="text-muted-foreground">المجموع</span>
-                        <span>{{ number_format($this->subtotal, 2) }} ₪</span>
-                    </div>
-
-                    <div class="flex justify-between">
-                        <span class="text-muted-foreground">التوصيل</span>
-                        <span>{{ number_format($delivery_fee, 2) }} ₪</span>
-                    </div>
-
-                    <div class="flex justify-between font-serif text-xl text-primary pt-2">
-                        <span>الإجمالي</span>
-                        <span>{{ number_format($this->total, 2) }} ₪</span>
-                    </div> --}}
                     <div class="flex justify-between">
                         <span class="text-muted-foreground">المجموع</span>
                         <span>{{ number_format($this->subtotal, 2) }} ₪</span>
@@ -208,22 +204,12 @@
                         <span>{{ number_format($this->total, 2) }} ₪</span>
                     </div>
                 </div>
-                <button wire:click="placeOrder" wire:loading.attr="disabled" wire:target="placeOrder" type="button"
+                <button wire:loading.attr="disabled" wire:target="placeOrder,payment_receipt" type="submit"
                     class="w-full inline-flex items-center justify-center gap-2 rounded-full btn-hero px-6 py-3 font-semibold">
-                    <span wire:loading.remove wire:target="placeOrder">حفظ الطلب وإرساله عبر واتساب</span>
+                    <span wire:loading.remove wire:target="placeOrder">إرسال الطلب وإثبات الدفع</span>
                     <span wire:loading wire:target="placeOrder">جاري الإرسال...</span>
                 </button>
-                {{-- <button type="submit"
-                    class="w-full inline-flex items-center justify-center gap-2 rounded-full btn-hero px-6 py-3 font-semibold">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="lucide lucide-send h-4 w-4" aria-hidden="true">
-                        <path
-                            d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z">
-                        </path>
-                        <path d="m21.854 2.147-10.94 10.939"></path>
-                    </svg> إرسال الطلب عبر واتساب</button> --}}
-                <p class="text-[11px] text-center text-muted-foreground">سيتم فتح واتساب لإكمال إرسال الطلب.
+                <p class="text-[11px] text-center text-muted-foreground">سيصل طلبك للكاشير لمراجعة الدفع وتتابع المراحل على المنصة.
                 </p>
             </form>
         </div>
@@ -245,33 +231,4 @@
             }
         </style>
     </div>
-    @if ($orderSuccess)
-        <div
-            class="fixed top-6 right-6 z-50 w-[320px] rounded-2xl border border-green-500/20 bg-white/90 backdrop-blur-xl shadow-lg p-4 animate-fade-in">
-
-            <div class="flex items-start gap-3">
-
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2">
-                        <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                </div>
-
-                <div class="flex-1">
-                    <div class="text-sm font-semibold text-green-700">
-                        تم إرسال الطلب بنجاح 🎉
-                    </div>
-                    <div class="text-xs text-muted-foreground mt-1">
-                        سيتم التواصل معك قريباً لتأكيد الطلب
-                    </div>
-                </div>
-
-                <button wire:click="$set('orderSuccess', false)" class="text-gray-400 hover:text-gray-600">
-                    ✕
-                </button>
-
-            </div>
-        </div>
-    @endif
 </main>

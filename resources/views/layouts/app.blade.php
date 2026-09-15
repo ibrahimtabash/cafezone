@@ -2,6 +2,14 @@
 
 <head>
     <meta charset="utf-8">
+    <script>
+        try {
+            if (localStorage.getItem('cafe_order_alerts_enabled') === '1') {
+                document.documentElement.dataset.orderAlertsEnabled = 'true';
+            }
+        } catch (error) {}
+    </script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{-- <link rel="stylesheet" href="/assets/styles-Dn-bKRFa.css" data-precedence="default"> --}}
     <link rel="stylesheet"
@@ -12,7 +20,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="كافيه زون — قائمة الطعام والطلبات">
     <meta name="twitter:description"
-        content="منيو كافي زون — قهوة مختصة، بيتزا، برجر، حلويات وعصائر. اطلب أونلاين عبر واتساب.">
+        content="منيو كافي زون — قهوة مختصة، بيتزا، برجر، حلويات وعصائر. اطلب وتابع طلبك على المنصة.">
     {{-- <meta name="twitter:image"
         content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2a95fb28-ca5f-4b4d-8c9a-bf4c0e274770/id-preview-94f3ef8d--0ed84ee0-22b1-42ee-a884-d729efc17592.lovable.app-1782114812929.png"> --}}
 
@@ -24,7 +32,7 @@
     <meta property="og:image" content="">
     <title>كافيه زون — قائمة الطعام</title>
     <meta name="description"
-        content="تصفّح قائمة كافي زون: قهوة مختصة، بيتزا، برجر، عصائر وحلويات. اطلب أونلاين عبر واتساب.">
+        content="تصفّح قائمة كافي زون: قهوة مختصة، بيتزا، برجر، عصائر وحلويات. اطلب وتابع طلبك على المنصة.">
     <meta property="og:title" content="كافيه زون">
     <meta property="og:description" content="تصفّح قائمة كافي زون واطلب أونلاين.">
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/logo.jpeg') }}" >
@@ -52,6 +60,7 @@
                         data-status="active" aria-current="page">القائمة</a>
 
                     <livewire:front.cart-counter />
+                    <a href="{{ route('orders.mine') }}" class="rounded-full px-3 py-2 hover:bg-secondary transition">طلباتي</a>
 
                 </nav>
             </div>
@@ -69,6 +78,22 @@
         </div>
 
         {{ $slot }}
+
+        @if(($activeOrder = \App\Support\CustomerOrders::activeOrder())
+            && ! (request()->routeIs('orders.track') && request()->route('token') === $activeOrder->tracking_token))
+            <div class="sticky bottom-3 z-30 mx-auto w-full max-w-xl px-4">
+                <a href="{{ route('orders.track', ['token' => $activeOrder->tracking_token]) }}" class="group flex items-center gap-3 rounded-2xl border border-white/15 bg-primary p-3 text-primary-foreground shadow-[0_14px_40px_rgba(73,32,24,.35)] transition hover:-translate-y-1">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    </span>
+                    <span class="min-w-0 flex-1">
+                        <span class="block text-xs text-primary-foreground/70">لديك طلب جارٍ</span>
+                        <strong class="mt-0.5 block truncate text-sm">{{ $activeOrder->statusMessage() }}</strong>
+                    </span>
+                    <span class="rounded-xl bg-white px-3 py-2 text-xs font-bold text-primary transition group-hover:scale-105">متابعة</span>
+                </a>
+            </div>
+        @endif
 
         <footer class="border-t border-border/60 py-8 text-center text-sm text-muted-foreground">
             <div class="font-serif text-primary text-lg">كافيه زون</div>
@@ -116,13 +141,6 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('open-whatsapp', (event) => {
-                window.open(event.url, '_blank');
-            });
-        });
-    </script>
 </body>
 
 </html>

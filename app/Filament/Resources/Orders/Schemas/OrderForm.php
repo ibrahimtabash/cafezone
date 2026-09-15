@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
+use App\Models\Order;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class OrderForm
@@ -54,14 +55,7 @@ class OrderForm
                     ->columnSpanFull(),
                 Select::make('status')
                     ->label('الحالة')
-                    ->options([
-            'pending' => 'جديد',
-            'confirmed' => 'مؤكد',
-            'preparing' => 'قيد التحضير',
-            'on_the_way' => 'في الطريق / جاهز',
-            'completed' => 'مكتمل',
-            'cancelled' => 'ملغي',
-        ])
+                    ->options(Order::statusLabels())
                     ->default('pending')
                     ->required(),
             ]);

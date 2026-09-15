@@ -21,7 +21,7 @@ class ExportMenuItemsController extends Controller
 {
     public function __invoke(): BinaryFileResponse
     {
-        abort_unless(auth()->user()?->isAdmin(), 403);
+        abort_unless(auth()->user()?->canManageCatalog(), 403);
 
         $items = MenuItem::query()
             ->with('category:id,name')
@@ -30,10 +30,10 @@ class ExportMenuItemsController extends Controller
 
         $exportDirectory = storage_path('app/private/exports');
         File::ensureDirectoryExists($exportDirectory);
-        $fileName = 'menu-products-' . now()->format('Y-m-d-His') . '.xlsx';
-        $filePath = $exportDirectory . DIRECTORY_SEPARATOR . Str::uuid() . '.xlsx';
+        $fileName = 'menu-products-'.now()->format('Y-m-d-His').'.xlsx';
+        $filePath = $exportDirectory.DIRECTORY_SEPARATOR.Str::uuid().'.xlsx';
 
-        $options = new Options();
+        $options = new Options;
         $options->setColumnWidth(30, 1);
         $options->setColumnWidth(16, 2);
         $options->setColumnWidth(70, 3);
@@ -46,25 +46,25 @@ class ExportMenuItemsController extends Controller
         $sheet = $writer->getCurrentSheet();
         $sheet->setName('المنتجات');
         $sheet->setSheetView(
-            (new SheetView())
+            (new SheetView)
                 ->setRightToLeft(true)
                 ->setFreezeRow(2)
                 ->setZoomScale(95)
         );
         $sheet->setAutoFilter(new AutoFilter(0, 1, 3, max(1, $items->count() + 1)));
 
-        $headerStyle = (new Style())
+        $headerStyle = (new Style)
             ->setFontBold()
             ->setFontColor(Color::WHITE)
             ->setFontSize(12)
             ->setBackgroundColor('7B3526')
             ->setCellAlignment(CellAlignment::CENTER);
 
-        $priceStyle = (new Style())
+        $priceStyle = (new Style)
             ->setFormat('#,##0.00 "₪"')
             ->setCellAlignment(CellAlignment::CENTER);
 
-        $urlStyle = (new Style())
+        $urlStyle = (new Style)
             ->setFontColor(Color::BLUE)
             ->setFontUnderline()
             ->setShouldWrapText();

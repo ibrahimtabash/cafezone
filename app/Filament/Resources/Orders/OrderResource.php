@@ -24,13 +24,16 @@ class OrderResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'order_number';
+
     protected static ?string $navigationLabel = 'متابعة الطلبات';
+
     protected static ?string $modelLabel = 'طلب';
+
     protected static ?string $pluralModelLabel = 'الطلبات';
 
     public static function canViewAny(): bool
     {
-        return auth()->check();
+        return auth()->user()?->canManageOrders() || auth()->user()?->canOnlyViewOrders();
     }
 
     public static function canCreate(): bool
@@ -40,7 +43,7 @@ class OrderResource extends Resource
 
     public static function canEdit(Model $record): bool
     {
-        return auth()->user()?->isAdmin() === true;
+        return auth()->user()?->canManageOrders() === true;
     }
 
     public static function canDelete(Model $record): bool

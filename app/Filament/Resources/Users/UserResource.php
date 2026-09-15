@@ -20,9 +20,13 @@ use Filament\Tables\Table;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
+
     protected static ?string $navigationLabel = 'الحسابات والصلاحيات';
+
     protected static ?string $modelLabel = 'حساب';
+
     protected static ?string $pluralModelLabel = 'الحسابات';
 
     public static function canViewAny(): bool
@@ -37,6 +41,8 @@ class UserResource extends Resource
             TextInput::make('email')->label('البريد الإلكتروني')->email()->required()->unique(ignoreRecord: true),
             Select::make('role')->label('الصلاحية')->options([
                 'admin' => 'مدير — جميع الصلاحيات',
+                'editor' => 'محرر — إدارة المحتوى والطلبات والدفع',
+                'cashier' => 'كاشير — تأكيد الدفع وإدارة الطلبات',
                 'orders_viewer' => 'موظف طلبات — مشاهدة وإضافة طلب يدوي',
             ])->default('orders_viewer')->required()
                 ->disabled(fn (?User $record): bool => $record?->is(auth()->user()) === true)
@@ -57,7 +63,12 @@ class UserResource extends Resource
         return $table->columns([
             TextColumn::make('name')->label('الاسم')->searchable(),
             TextColumn::make('email')->label('البريد')->searchable(),
-            TextColumn::make('role')->label('الصلاحية')->badge()->formatStateUsing(fn (?string $state) => $state === 'admin' ? 'مدير' : 'موظف طلبات'),
+            TextColumn::make('role')->label('الصلاحية')->badge()->formatStateUsing(fn (?string $state) => match ($state) {
+                'admin' => 'مدير',
+                'editor' => 'محرر',
+                'cashier' => 'كاشير',
+                default => 'موظف طلبات',
+            }),
             TextColumn::make('created_at')->label('تاريخ الإنشاء')->dateTime('Y-m-d'),
         ])->recordActions([
             EditAction::make(),

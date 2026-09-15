@@ -2,19 +2,23 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\Orders\OrderResource;
 use App\Models\Order as ModelsOrder;
-use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
-use Illuminate\Database\Eloquent\Builder;
-use Order;
+use Livewire\Attributes\On;
 
 class LatestOrders extends TableWidget
 {
     protected static ?string $heading = 'آخر الطلبات';
+
     protected int|string|array $columnSpan = 'full';
+
     protected static ?int $sort = 2;
+
+    #[On('orders-changed')]
+    public function refreshOrders(): void {}
 
     public static function canView(): bool
     {
@@ -24,6 +28,9 @@ class LatestOrders extends TableWidget
     public function table(Table $table): Table
     {
         return $table
+            ->poll('30s')
+            ->recordClasses(fn (ModelsOrder $record) => $record->opened_at ? null : 'order-unread')
+            ->recordUrl(fn (ModelsOrder $record) => OrderResource::getUrl('view', ['record' => $record]))
             ->query(
                 ModelsOrder::query()->latest()
             )

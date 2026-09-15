@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\MenuItems\MenuItemResource;
 use App\Filament\Resources\Orders\OrderResource;
 use Filament\Pages\Dashboard as BaseDashboard;
 
@@ -19,7 +20,13 @@ class Dashboard extends BaseDashboard
 
     public function mount(): void
     {
-        if (auth()->user()?->canOnlyViewOrders() === true) {
+        if (auth()->user()?->canManageCatalog() === true) {
+            $this->redirect(MenuItemResource::getUrl(), navigate: true);
+
+            return;
+        }
+
+        if (auth()->user()?->isAdmin() !== true) {
             $this->redirect(OrderResource::getUrl(), navigate: true);
         }
     }

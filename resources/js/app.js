@@ -1,3 +1,6 @@
+import './echo';
+import './order-alerts';
+
 window.flyToCart = (event, imageUrl) => {
     const cart = document.querySelector('[data-cart-target]');
     const card = event.currentTarget.closest('[data-menu-item-card]');

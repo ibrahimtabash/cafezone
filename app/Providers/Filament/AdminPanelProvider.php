@@ -2,13 +2,16 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Dashboard;
+use App\Filament\Resources\MenuItems\MenuItemResource;
+use App\Filament\Resources\Orders\OrderResource;
+use App\Filament\Widgets\LatestOrders;
+use App\Filament\Widgets\StatsOverview;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\FontProviders\GoogleFontProvider;
-use App\Filament\Pages\Dashboard;
-use App\Filament\Resources\Orders\OrderResource;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -29,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->renderHook('panels::body.end', fn () => view('admin.order-alerts'))
             ->brandName('كافيه زون')
             ->font(
                 'Alexandria',
@@ -37,9 +41,11 @@ class AdminPanelProvider extends PanelProvider
             )
             ->login()
             ->profile()
-            ->homeUrl(fn (): string => auth()->user()?->isAdmin()
-                ? route('filament.admin.pages.dashboard')
-                : OrderResource::getUrl())
+            ->homeUrl(fn (): string => match (true) {
+                auth()->user()?->isAdmin() => route('filament.admin.pages.dashboard'),
+                auth()->user()?->canManageCatalog() => MenuItemResource::getUrl(),
+                default => OrderResource::getUrl(),
+            })
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -53,10 +59,9 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 // FilamentInfoWidget::class,
 
-                \App\Filament\Widgets\StatsOverview::class,
+                StatsOverview::class,
 
-
-                \App\Filament\Widgets\LatestOrders::class,
+                LatestOrders::class,
             ])
             ->middleware([
                 EncryptCookies::class,
