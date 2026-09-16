@@ -16,7 +16,9 @@ class OrderForm
             ->components([
                 TextInput::make('order_number')
                     ->label('رقم الطلب')
-                    ->required(),
+                    ->disabled()
+                    ->dehydrated(false)
+                    ->hiddenOn('create'),
                 Select::make('order_type')->label('نوع الطلب')->options([
                     'dine_in' => 'داخل الكافي', 'takeaway' => 'طلب خارجي', 'delivery' => 'توصيل',
                 ])->required(),

@@ -6,6 +6,7 @@ use App\Events\OrderChanged;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class Order extends Model
@@ -77,6 +78,19 @@ class Order extends Model
 
     protected static function booted(): void
     {
+        static::creating(function (Order $order) {
+            // The final number uses the database ID, which is only available
+            // after insertion. This temporary value satisfies the unique,
+            // non-null database column and is replaced in the created event.
+            $order->order_number = 'TMP-'.Str::uuid();
+        });
+
+        static::created(function (Order $order) {
+            $order->forceFill([
+                'order_number' => $order->generatedOrderNumber(),
+            ])->saveQuietly();
+        });
+
         static::updating(function (Order $order) {
             if ($order->isDirty('status')) {
                 if (! array_key_exists($order->status, self::statusLabels())) {
@@ -95,5 +109,26 @@ class Order extends Model
                 OrderChanged::dispatch($order->id, $order->tracking_token);
             }
         });
+    }
+
+    private function generatedOrderNumber(): string
+    {
+        $sequence = str_pad((string) $this->getKey(), 6, '0', STR_PAD_LEFT);
+
+        return match ($this->order_type) {
+            'dine_in' => 'IN-T-'.$this->tableNumberPart().'-'.$sequence,
+            'takeaway' => 'OUT-'.$sequence,
+            'delivery' => 'DEL-'.$sequence,
+            default => 'ORD-'.$sequence,
+        };
+    }
+
+    private function tableNumberPart(): string
+    {
+        $table = $this->diningTable()->first();
+        $value = $table?->name ?: $table?->code ?: (string) $this->dining_table_id;
+        $normalized = Str::upper(preg_replace('/[^\pL\pN]+/u', '-', trim($value ?? '')) ?? '');
+
+        return trim($normalized, '-') ?: 'NA';
     }
 }

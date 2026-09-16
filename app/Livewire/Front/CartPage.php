@@ -231,7 +231,7 @@ class CartPage extends Component
                     DiningTable::where('is_active', true)->findOrFail($this->dining_table_id);
                 }
                 $order = Order::create([
-                    'order_number' => 'ORD-'.strtoupper(Str::random(12)), 'checkout_key' => $this->checkout_key,
+                    'checkout_key' => $this->checkout_key,
                     'tracking_token' => Str::random(64), 'order_type' => $this->order_type,
                     'dining_table_id' => $this->order_type === 'dine_in' ? $this->dining_table_id : null,
                     'customer_name' => $this->customer_name ?: null, 'customer_phone' => $this->customer_phone,

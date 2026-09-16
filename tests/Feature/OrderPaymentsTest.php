@@ -3,6 +3,7 @@
 use App\Events\OrderChanged;
 use App\Livewire\Front\CartPage;
 use App\Models\Category;
+use App\Models\DiningTable;
 use App\Models\MenuItem;
 use App\Models\Order;
 use App\Models\PaymentMethod;
@@ -29,6 +30,41 @@ function pendingCafeOrder(): Order
 beforeEach(function () {
     Event::fake([OrderChanged::class]);
     Storage::fake('local');
+});
+
+it('generates distinct order numbers for every order channel including manual orders', function () {
+    $table = DiningTable::create([
+        'name' => 'A01',
+        'code' => 'table-a01',
+        'capacity' => 4,
+        'is_active' => true,
+    ]);
+
+    $inside = Order::create([
+        'order_number' => 'MANUAL-NUMBER',
+        'order_type' => 'dine_in',
+        'dining_table_id' => $table->id,
+        'subtotal' => 10,
+        'total' => 10,
+        'status' => 'pending',
+    ]);
+    $takeaway = Order::create([
+        'order_type' => 'takeaway',
+        'subtotal' => 10,
+        'total' => 10,
+        'status' => 'pending',
+    ]);
+    $delivery = Order::create([
+        'order_type' => 'delivery',
+        'subtotal' => 10,
+        'total' => 10,
+        'status' => 'pending',
+    ]);
+
+    expect($inside->order_number)->toMatch('/^IN-T-A01-\d{6,}$/')
+        ->and($inside->order_number)->not->toBe('MANUAL-NUMBER')
+        ->and($takeaway->order_number)->toMatch('/^OUT-\d{6,}$/')
+        ->and($delivery->order_number)->toMatch('/^DEL-\d{6,}$/');
 });
 
 it('checks payment before advancing and records the complete pickup workflow', function () {
