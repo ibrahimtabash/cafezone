@@ -1,17 +1,26 @@
 <main class="flex-1">
-    <div class="mx-auto max-w-5xl px-4 py-10">
-        <h1 class="font-serif text-3xl text-primary">السلة وإتمام الطلب</h1>
-        <div class="mt-4 inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+    <div class="mx-auto max-w-4xl px-4 py-6 sm:py-10">
+        <div class="flex items-end justify-between gap-3">
+            <div>
+                <p class="text-[10px] font-bold tracking-[.22em] text-gold">ORDER</p>
+                <h1 class="mt-1 font-serif text-2xl font-bold text-primary sm:text-3xl">{{ $showCheckout ? 'إتمام الطلب' : 'سلة الطلب' }}</h1>
+            </div>
+            <div class="flex items-center gap-1 rounded-full border border-primary/10 bg-card p-1 text-[10px] font-bold shadow-sm sm:text-xs">
+                <span class="rounded-full px-3 py-1.5 {{ ! $showCheckout ? 'bg-primary text-primary-foreground' : 'text-muted-foreground' }}">1 السلة</span>
+                <span class="rounded-full px-3 py-1.5 {{ $showCheckout ? 'bg-primary text-primary-foreground' : 'text-muted-foreground' }}">2 الدفع</span>
+            </div>
+        </div>
+        <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-primary/8 px-3 py-1.5 text-xs font-semibold text-primary sm:text-sm">
+            <span class="h-2 w-2 rounded-full bg-gold"></span>
             @if($order_type === 'dine_in') الطلب داخل الكافي — {{ $dining_table_name }}
             @elseif($order_type === 'takeaway') طلب خارجي — استلام من الكافي
             @else طلب توصيل @endif
         </div>
-        <div class="mt-2 h-1 w-24 tatreez-border"></div>
-        <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_380px]">
+        <div class="mt-6">
+            @if(! $showCheckout)
             <div class="space-y-3 overflow-x-hidden">
                 @forelse($cart as $item)
-                    <div
-                        class="flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl border border-border bg-card p-4">
+                    <div class="grid grid-cols-[3.75rem_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border border-border/80 bg-card p-3 shadow-[0_8px_24px_rgba(73,32,24,.05)] sm:grid-cols-[4rem_minmax(0,1fr)_auto_auto_auto] sm:gap-4 sm:p-4">
 
                         <img src="{{ Storage::url($item['image']) }}" alt="{{ $item['name'] }}"
                             class="h-16 w-16 shrink-0 rounded-xl object-cover">
@@ -26,7 +35,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-center gap-1 rounded-full bg-secondary p-1">
+                        <div class="col-start-2 row-start-2 flex w-fit items-center justify-center gap-1 rounded-full bg-secondary p-1 sm:col-start-auto sm:row-start-auto">
 
                             <button wire:click="decrease({{ $item['id'] }})"
                                 class="rounded-full bg-background p-1.5 hover:bg-primary hover:text-primary-foreground transition">
@@ -55,12 +64,12 @@
 
                         </div>
 
-                        <div class="w-full sm:w-20 text-left font-serif text-lg text-primary">
+                        <div class="col-start-3 row-start-2 text-left font-serif text-base font-bold text-primary sm:col-start-auto sm:row-start-auto sm:w-20 sm:text-lg">
                             {{ number_format($item['price'] * $item['quantity'], 2) }} ₪
                         </div>
 
                         <button wire:click="remove({{ $item['id'] }})"
-                            class="text-muted-foreground hover:text-red-500" title="حذف من السلة">
+                            class="col-start-3 row-start-1 flex h-8 w-8 items-center justify-center justify-self-end rounded-full text-muted-foreground transition hover:bg-red-50 hover:text-red-500 sm:col-start-auto sm:row-start-auto" title="حذف من السلة">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="lucide lucide-trash-2">
@@ -94,11 +103,40 @@
                             القائمة</a>
                     </div>
                 @endforelse
+
+                @if($cart)
+                    <div class="mt-5 rounded-3xl border border-primary/10 bg-[linear-gradient(135deg,var(--color-card),color-mix(in_srgb,var(--color-secondary)_45%,white))] p-5 shadow-[var(--shadow-soft)] sm:p-6">
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <span class="block text-xs text-muted-foreground">إجمالي السلة</span>
+                                <strong class="mt-1 block font-serif text-2xl text-primary">{{ number_format($this->subtotal, 2) }} ₪</strong>
+                                @if($order_type === 'delivery')
+                                    <span class="mt-1 block text-[11px] text-muted-foreground">تضاف رسوم التوصيل بعد اختيار المنطقة</span>
+                                @endif
+                            </div>
+                            <button type="button" wire:click="openCheckout" wire:loading.attr="disabled" wire:target="openCheckout"
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-lg transition hover:-translate-y-0.5 disabled:opacity-70 sm:w-auto">
+                                متابعة لإتمام الطلب
+                                <svg class="h-4 w-4 rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                @endif
             </div>
 
+            @else
             <form wire:submit="placeOrder"
-                class="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] space-y-4 h-fit lg:sticky lg:top-24">
-                <h2 class="text-xl font-bold">بيانات الدفع</h2>
+                class="mx-auto max-w-2xl space-y-5 rounded-3xl border border-border bg-card p-5 shadow-[var(--shadow-soft)] sm:p-7">
+                <button type="button" wire:click="backToCart"
+                    class="inline-flex items-center gap-2 text-sm font-bold text-primary transition hover:opacity-70">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                    العودة إلى السلة
+                </button>
+                <div class="border-b border-border/70 pb-4">
+                    <p class="text-xs font-bold text-gold">الخطوة الأخيرة</p>
+                    <h2 class="mt-1 font-serif text-2xl font-bold text-primary">بيانات الدفع</h2>
+                    <p class="mt-1 text-xs leading-6 text-muted-foreground">اختر طريقة الدفع، حوّل المبلغ، ثم أرفق صورة الإيصال.</p>
+                </div>
                 <label class="block">طريقة الدفع
                     <select class="field" wire:model.live="payment_method_id">
                         <option value="">اختر البنك أو المحفظة</option>
@@ -212,6 +250,7 @@
                 <p class="text-[11px] text-center text-muted-foreground">سيصل طلبك للكاشير لمراجعة الدفع وتتابع المراحل على المنصة.
                 </p>
             </form>
+            @endif
         </div>
         <style>
             .field {
@@ -231,4 +270,7 @@
             }
         </style>
     </div>
+    <script>
+        window.addEventListener('checkout-opened', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
 </main>

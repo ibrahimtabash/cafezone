@@ -42,20 +42,20 @@
 
 
     <div class="min-h-screen flex flex-col">
-        <header class="site-header sticky top-0 z-40 border-b border-border/60 bg-background/90 shadow-[0_5px_22px_rgba(73,32,24,.06)] backdrop-blur-xl">
-            <div class="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
+        <header class="site-header sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-xl">
+            <div class="mx-auto flex max-w-6xl items-center justify-between gap-1 px-3 py-3 sm:gap-2 sm:px-4">
                 <a href="/" class="site-brand group flex min-w-0 items-center gap-2" aria-label="كافيه زون — الرئيسية">
                     <span
-                        class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-foreground transition-transform group-hover:rotate-12 sm:h-12 sm:w-12">
+                        class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-primary-foreground transition-transform group-hover:rotate-12">
 
                         <img src="{{ asset('assets/images/logo2026.png') }}" alt="logo">
                     </span>
                     <div class="min-w-0 leading-tight">
-                        <div class="truncate font-serif text-base font-bold text-primary sm:text-lg">زون</div>
-                        <div class="hidden text-[10px] tracking-[0.3em] text-muted-foreground min-[390px]:block">قهوة ومأكولات</div>
+                        <div class="font-serif text-lg text-primary">زون</div>
+                        <div class="text-[10px] tracking-[0.3em] text-muted-foreground">قهوة ومأكولات</div>
                     </div>
                 </a>
-                <nav class="site-nav flex items-center gap-1 rounded-2xl border border-primary/10 bg-card/70 p-1 text-xs shadow-sm sm:gap-2 sm:rounded-full sm:text-sm" aria-label="التنقل الرئيسي">
+                <nav class="site-nav flex items-center gap-0.5 text-xs sm:gap-1 sm:text-sm" aria-label="التنقل الرئيسي">
                     <a href="/" aria-label="القائمة"
                         class="site-nav__link {{ request()->routeIs('home', 'category.show') ? 'is-active' : '' }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>

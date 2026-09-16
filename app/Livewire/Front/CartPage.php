@@ -7,6 +7,7 @@ use App\Models\DiningTable;
 use App\Models\MenuItem;
 use App\Models\Order;
 use App\Models\PaymentMethod;
+use App\Support\CustomerOrders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -30,6 +31,8 @@ class CartPage extends Component
     public array $cart = [];
 
     public bool $orderSuccess = false;
+
+    public bool $showCheckout = false;
 
     public string $customer_name = '';
 
@@ -95,6 +98,27 @@ class CartPage extends Component
         unset($cart[$itemId]);
 
         $this->syncCart($cart);
+    }
+
+    public function openCheckout(): void
+    {
+        $this->cart = session('cart', []);
+
+        if ($this->cart === []) {
+            $this->addError('cart', 'السلة فارغة. أضف منتجاً قبل إتمام الطلب.');
+
+            return;
+        }
+
+        $this->resetValidation();
+        $this->showCheckout = true;
+        $this->dispatch('checkout-opened');
+    }
+
+    public function backToCart(): void
+    {
+        $this->showCheckout = false;
+        $this->resetValidation();
     }
 
     /**
@@ -224,7 +248,7 @@ class CartPage extends Component
             Storage::disk('local')->delete($receipt);
         }
         session()->forget(['cart', 'checkout_key']);
-        \App\Support\CustomerOrders::remember($order);
+        CustomerOrders::remember($order);
         $this->dispatch('cart-updated');
 
         return $this->redirectRoute('orders.track', ['token' => $order->tracking_token]);
