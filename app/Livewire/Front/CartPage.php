@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Support\CustomerOrders;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -196,6 +197,15 @@ class CartPage extends Component
             'delivery_area_id' => $this->order_type === 'delivery' ? ['required', Rule::exists('delivery_areas', 'id')->where('is_active', true)] : 'nullable',
             'address' => $this->order_type === 'delivery' ? 'required|string|min:5|max:500' : 'nullable',
         ]);
+
+        $rateLimitKey = 'place-order:'.request()->ip();
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 5)) {
+            throw ValidationException::withMessages([
+                'cart' => 'تم إرسال عدة طلبات خلال وقت قصير. حاول مجدداً بعد '.RateLimiter::availableIn($rateLimitKey).' ثانية.',
+            ]);
+        }
+        RateLimiter::hit($rateLimitKey, 60);
+
         $receipt = $this->payment_receipt->store('payment-receipts', 'local');
         try {
             $order = DB::transaction(function () use ($receipt) {
