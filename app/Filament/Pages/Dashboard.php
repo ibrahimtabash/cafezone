@@ -20,14 +20,16 @@ class Dashboard extends BaseDashboard
 
     public function mount(): void
     {
+        if (auth()->user()?->isAdmin() === true) {
+            return;
+        }
+
         if (auth()->user()?->canManageCatalog() === true) {
             $this->redirect(MenuItemResource::getUrl(), navigate: true);
 
             return;
         }
 
-        if (auth()->user()?->isAdmin() !== true) {
-            $this->redirect(OrderResource::getUrl(), navigate: true);
-        }
+        $this->redirect(OrderResource::getUrl(), navigate: true);
     }
 }

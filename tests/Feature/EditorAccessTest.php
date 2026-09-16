@@ -13,6 +13,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+it('keeps an administrator on the dashboard', function () {
+    $this->actingAs(User::factory()->create(['role' => 'admin']));
+
+    $this->get('/admin')->assertOk();
+});
+
 it('lets an editor fully manage catalog delivery areas and payment methods', function () {
     $this->actingAs(User::factory()->create(['role' => 'editor']));
 
