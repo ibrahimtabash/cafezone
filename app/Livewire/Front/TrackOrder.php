@@ -3,7 +3,9 @@
 namespace App\Livewire\Front;
 
 use App\Models\Order;
+use App\Support\CustomerOrders;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TrackOrder extends Component
@@ -15,13 +17,11 @@ class TrackOrder extends Component
     {
         $this->token = $token;
         $order = Order::where('tracking_token', $token)->firstOrFail();
-        \App\Support\CustomerOrders::remember($order);
+        CustomerOrders::remember($order);
     }
 
-    public function getListeners(): array
-    {
-        return ["echo:order.{$this->token},OrderChanged" => '$refresh'];
-    }
+    #[On('order-status-changed')]
+    public function refreshOrder(): void {}
 
     public function render()
     {

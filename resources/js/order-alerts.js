@@ -210,7 +210,12 @@ function subscribe() {
         if (admin) {
             window.Livewire?.dispatch('orders-changed');
             if (event.isNew) alertOrder('الطلب بانتظار مراجعة إثبات الدفع', `/admin/orders/${event.id}`);
-        } else if (event.message) alertOrder(event.message);
+        } else {
+            // Refresh the tracking component from the same event that produced the alert.
+            // This avoids waiting for the 30-second fallback poll.
+            window.Livewire?.dispatch('order-status-changed');
+            if (event.message) alertOrder(event.message);
+        }
     });
     window.Echo.connector.pusher.connection.bind('connected', () => {
         if (admin) window.Livewire?.dispatch('orders-changed');
