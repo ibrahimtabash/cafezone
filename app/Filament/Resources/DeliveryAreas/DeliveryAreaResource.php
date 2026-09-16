@@ -19,7 +19,11 @@ class DeliveryAreaResource extends Resource
 {
     protected static ?string $model = DeliveryArea::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'إعدادات الطلب';
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationLabel = 'مناطق التوصيل';
 

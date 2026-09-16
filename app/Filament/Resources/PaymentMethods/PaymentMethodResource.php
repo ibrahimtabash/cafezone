@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PaymentMethods;
 
 use App\Models\PaymentMethod;
+use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -21,6 +23,12 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentMethodResource extends Resource
 {
     protected static ?string $model = PaymentMethod::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCreditCard;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'إعدادات الطلب';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationLabel = 'طرق الدفع والحسابات';
 

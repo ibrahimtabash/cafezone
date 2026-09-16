@@ -19,7 +19,11 @@ class MenuItemResource extends Resource
 {
     protected static ?string $model = MenuItem::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingBag;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'إدارة القائمة';
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationLabel = 'المنتجات';
 

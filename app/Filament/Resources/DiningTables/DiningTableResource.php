@@ -21,9 +21,17 @@ use Illuminate\Support\Str;
 class DiningTableResource extends Resource
 {
     protected static ?string $model = DiningTable::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQrCode;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'إعدادات الطلب';
+
+    protected static ?int $navigationSort = 3;
+
     protected static ?string $navigationLabel = 'الطاولات ورموز QR';
+
     protected static ?string $modelLabel = 'طاولة';
+
     protected static ?string $pluralModelLabel = 'الطاولات';
 
     public static function canViewAny(): bool
