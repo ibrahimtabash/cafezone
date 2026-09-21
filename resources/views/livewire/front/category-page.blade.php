@@ -58,12 +58,18 @@
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex-1">
                                 <h3 class="font-serif text-lg text-foreground">{{ $item->name }}</h3>
+                                @if(filled($item->description))
+                                    <p class="mt-1.5 line-clamp-2 text-sm leading-6 text-muted-foreground"
+                                        title="{{ $item->description }}">
+                                        {{ $item->description }}
+                                    </p>
+                                @endif
                             </div>
                         </div>
                         <button
                             wire:click="addToCart({{ $item->id }})"
                             x-on:click="window.flyToCart($event, @js(Storage::url($item->image)))"
-                            class="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition bg-primary text-primary-foreground hover:opacity-90">
+                            class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition bg-primary text-primary-foreground hover:opacity-90">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

@@ -35,9 +35,10 @@ class ExportMenuItemsController extends Controller
 
         $options = new Options;
         $options->setColumnWidth(30, 1);
-        $options->setColumnWidth(16, 2);
-        $options->setColumnWidth(70, 3);
-        $options->setColumnWidth(28, 4);
+        $options->setColumnWidth(48, 2);
+        $options->setColumnWidth(16, 3);
+        $options->setColumnWidth(70, 4);
+        $options->setColumnWidth(28, 5);
 
         $writer = new Writer($options);
         $writer->setCreator('Zone Cafe');
@@ -51,7 +52,7 @@ class ExportMenuItemsController extends Controller
                 ->setFreezeRow(2)
                 ->setZoomScale(95)
         );
-        $sheet->setAutoFilter(new AutoFilter(0, 1, 3, max(1, $items->count() + 1)));
+        $sheet->setAutoFilter(new AutoFilter(0, 1, 4, max(1, $items->count() + 1)));
 
         $headerStyle = (new Style)
             ->setFontBold()
@@ -69,8 +70,12 @@ class ExportMenuItemsController extends Controller
             ->setFontUnderline()
             ->setShouldWrapText();
 
+        $descriptionStyle = (new Style)
+            ->setShouldWrapText()
+            ->setCellAlignment(CellAlignment::RIGHT);
+
         $writer->addRow(
-            Row::fromValues(['اسم المنتج', 'السعر', 'رابط الصورة', 'التصنيف'], $headerStyle)
+            Row::fromValues(['اسم المنتج', 'الوصف', 'السعر', 'رابط الصورة', 'التصنيف'], $headerStyle)
                 ->setHeight(26)
         );
 
@@ -82,12 +87,14 @@ class ExportMenuItemsController extends Controller
 
             $writer->addRow(Row::fromValuesWithStyles([
                 $item->name,
+                $item->description ?? '',
                 (float) $item->price,
                 $imageUrl,
                 $item->category?->name ?? 'بدون تصنيف',
             ], columnStyles: [
-                1 => $priceStyle,
-                2 => $urlStyle,
+                1 => $descriptionStyle,
+                2 => $priceStyle,
+                3 => $urlStyle,
             ]));
         }
 
