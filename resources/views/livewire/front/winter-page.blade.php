@@ -34,7 +34,7 @@
                                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                             <span class="absolute top-4 right-4 rounded-full px-3 py-1 text-xs font-semibold bg-primary text-white">
-                                {{ $category->menu_items_count }} صنف
+                                {{ $category->totalItemsCount() }} صنف
                             </span>
                         </div>
                         <div class="p-5">

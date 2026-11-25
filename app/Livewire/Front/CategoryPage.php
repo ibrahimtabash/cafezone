@@ -4,6 +4,7 @@ namespace App\Livewire\Front;
 
 use App\Livewire\Front\Concerns\AddsToCart;
 use App\Models\Category;
+use App\Models\MenuItem;
 use Livewire\Component;
 
 class CategoryPage extends Component
@@ -22,8 +23,8 @@ class CategoryPage extends Component
     public function render()
     {
         return view('livewire.front.category-page', [
-            'items' => $this->category
-                ->menuItems()
+            'items' => MenuItem::query()
+                ->inCategory($this->category->id)
                 ->where('is_available', true)
                 ->latest()
                 ->get(),

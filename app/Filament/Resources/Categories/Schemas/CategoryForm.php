@@ -4,12 +4,15 @@ namespace App\Filament\Resources\Categories\Schemas;
 
 use App\Support\CompressedImageUploader;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class CategoryForm
@@ -77,6 +80,21 @@ class CategoryForm
                 Toggle::make('is_active')
                     ->label('نشط')
                     ->required(),
+                Select::make('extraItems')
+                    ->label('منتجات من أقسام أخرى')
+                    ->helperText('أضف منتجات موجودة في أقسام أخرى لتظهر هنا أيضاً مع قسمها الأصلي (مثلاً لقسم شتوي).')
+                    ->relationship(
+                        'extraItems',
+                        'name',
+                        // لا تظهر منتجات هذا القسم الأصلية في الخيارات
+                        modifyQueryUsing: fn (Builder $query, ?Model $record) => $record
+                            ? $query->where('menu_items.category_id', '!=', $record->getKey())
+                            : $query,
+                    )
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->columnSpanFull(),
                 Toggle::make('is_winter')
                     ->label('قسم شتوي')
                     ->helperText('يظهر هذا التصنيف داخل صفحة المنتجات الشتوية التي يفتحها البانر الشتوي.')

@@ -18,7 +18,7 @@ class WinterPage extends Component
         $categories = Category::query()
             ->where('is_active', true)
             ->where('is_winter', true)
-            ->withCount('menuItems')
+            ->withCount(['menuItems', 'extraItems'])
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get();

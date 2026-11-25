@@ -12,7 +12,7 @@ class HomePage extends Component
     {
         $categories = Category::query()
             ->where('is_active', true)
-            ->withCount('menuItems')
+            ->withCount(['menuItems', 'extraItems'])
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get();
