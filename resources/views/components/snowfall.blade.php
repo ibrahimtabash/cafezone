@@ -4,18 +4,18 @@
         init() {
             const rnd = (a, b) => a + Math.random() * (b - a);
             const layers = [
-                { cls: 'is-far',  size: [7, 12],  dur: [16, 26], op: [0.4, 0.6] },
-                { cls: 'is-mid',  size: [12, 19], dur: [10, 17], op: [0.65, 0.85] },
-                { cls: 'is-near', size: [19, 30], dur: [6.5, 11], op: [0.85, 1] },
+                { cls: 'is-far',  size: [7, 12],  dur: [24, 36], op: [0.4, 0.6] },
+                { cls: 'is-mid',  size: [12, 19], dur: [17, 26], op: [0.65, 0.85] },
+                { cls: 'is-near', size: [19, 30], dur: [13, 19], op: [0.85, 1] },
             ];
             const shuffle = (el, layer, first) => {
                 el.style.setProperty('--x', rnd(-2, 102).toFixed(1) + 'vw');
                 el.style.setProperty('--s', rnd(...layer.size).toFixed(1) + 'px');
                 el.style.setProperty('--d', rnd(...layer.dur).toFixed(1) + 's');
-                el.style.setProperty('--drift', rnd(-110, 110).toFixed(0) + 'px');
+                el.style.setProperty('--drift', rnd(-22, 22).toFixed(0) + 'px');
                 el.style.setProperty('--o', rnd(...layer.op).toFixed(2));
-                el.style.setProperty('--sway', rnd(1.8, 5.5).toFixed(1) + 's');
-                el.style.setProperty('--spin', rnd(6, 20).toFixed(1) + 's');
+                el.style.setProperty('--sway', rnd(4, 8).toFixed(1) + 's');
+                el.style.setProperty('--spin', rnd(25, 50).toFixed(1) + 's');
                 if (first) el.style.setProperty('--delay', rnd(0, 12).toFixed(1) + 's');
             };
             const count = window.innerWidth < 640 ? 9 : 16;
