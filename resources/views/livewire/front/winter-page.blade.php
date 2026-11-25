@@ -3,14 +3,14 @@
         <section class="relative isolate">
             <div class="absolute inset-0 -z-10">
                 <x-hero-picture :desktop="$hero[0]" :mobile="$hero[1]" aria-hidden="true" />
-                <div class="absolute inset-0 bg-gradient-to-b from-[#0b1f3f]/70 via-[#0b1f3f]/55 to-[#0b1f3f]/80"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#2a0f14]/70 via-[#2a0f14]/55 to-[#2a0f14]/80"></div>
             </div>
             <div class="mx-auto max-w-6xl px-4 py-20 sm:py-28 text-center text-cream">
                 <div class="inline-flex items-center gap-2 rounded-full border border-cream/30 bg-background/10 px-4 py-1.5 text-xs tracking-[0.3em] backdrop-blur">
                     ❄ WINTER COLLECTION
                 </div>
                 <h1 class="mt-6 font-serif text-4xl sm:text-6xl font-bold leading-[1.15]">
-                    <span class="block text-sky-200 tracking-wide">Winter</span>
+                    <span class="block text-gold tracking-wide">Winter</span>
                     <span class="block mt-2">المنتجات الشتوية</span>
                 </h1>
                 <p class="mx-auto mt-5 max-w-xl text-base sm:text-lg text-cream/85">مشروبات ساخنة وحلويات ووجبات تدفّيك في أيام البرد. اختر القسم لتصفّح منتجاته.</p>

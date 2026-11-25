@@ -41,6 +41,7 @@
 <body>
     @if(config('cafe.winter_theme'))
         <x-snowfall />
+        <x-snowman />
     @endif
 
 
@@ -51,7 +52,7 @@
                     <span
                         class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-primary-foreground transition-transform group-hover:rotate-12">
 
-                        <img src="{{ asset('assets/images/logo2026.png') }}" alt="logo">
+                        <img src="{{ asset(config('cafe.winter_theme') ? 'assets/images/logo-winter.png' : 'assets/images/logo2026.png') }}" alt="logo" @class(['scale-[2.2]' => config('cafe.winter_theme')])>
                     </span>
                     <div class="min-w-0 leading-tight">
                         <div class="font-serif text-lg text-primary">زون</div>
@@ -106,8 +107,33 @@
         @endif
 
         <footer class="border-t border-border/60 py-8 text-center text-sm text-muted-foreground">
-            <div class="font-serif text-primary text-lg">كافيه زون</div>
-            <p class="mt-1">حيث تمتزج القهوة بالثقافة، والنكهة تُحكى كرواية تلامس القلب.</p>
+            @if(config('cafe.winter_theme'))
+                <div class="footer-scene" aria-hidden="true">
+                    <svg class="footer-tree footer-tree--a" viewBox="0 0 60 80"><use href="#cute-pine"/></svg>
+                    <svg class="footer-tree footer-tree--b" viewBox="0 0 60 80"><use href="#cute-pine"/></svg>
+                    <svg class="footer-tree footer-tree--c" viewBox="0 0 60 80"><use href="#cute-pine"/></svg>
+                    <svg class="footer-tree footer-tree--d" viewBox="0 0 60 80"><use href="#cute-pine"/></svg>
+                    <span class="footer-spark" style="--l: 18%; --t: 26%; --dl: 0s">✦</span>
+                    <span class="footer-spark" style="--l: 34%; --t: 60%; --dl: -1.2s">✧</span>
+                    <span class="footer-spark" style="--l: 66%; --t: 30%; --dl: -2.1s">✦</span>
+                    <span class="footer-spark" style="--l: 82%; --t: 58%; --dl: -0.6s">✧</span>
+                </div>
+                <div class="footer-drift"></div>
+                <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+                    <defs>
+                        <g id="cute-pine">
+                            <rect x="26" y="62" width="8" height="14" rx="3" fill="#7a4a2e"/>
+                            <path d="M30 6c8 0 12 10 16 18 5 2 9 8 5 14 6 4 8 12 2 18-6 4-16 6-23 6s-17-2-23-6c-6-6-4-14 2-18-4-6 0-12 5-14C18 16 22 6 30 6Z" fill="#2f7d5b"/>
+                            <path d="M30 6c8 0 12 10 16 18 5 2 9 8 5 14-3-4-9-6-14-5-3-6-2-14-7-27Z" fill="#256a4b" opacity=".55"/>
+                            <path d="M17 26c4-3 9-6 13-6s9 3 13 6c-5 5-8 2-13 4-5-2-8 1-13-4Zm-9 24c3 3 7 0 10 2s6 3 9 0c3 3 6 2 9 0 3 2 7 3 10 0 3 2 5 1 6-1-3 5-9 8-25 8-13 0-19-3-22-8 2 2 4 3 6 1l-3-2Z" fill="#fff"/>
+                        </g>
+                    </defs>
+                </svg>
+            @endif
+            <div class="footer-content">
+                <div class="font-serif text-primary text-lg">@if(config('cafe.winter_theme'))<span class="footer-flake">❄</span> @endif كافيه زون @if(config('cafe.winter_theme'))<span class="footer-flake">❄</span>@endif</div>
+                <p class="mt-1">حيث تمتزج القهوة بالثقافة، والنكهة تُحكى كرواية تلامس القلب.</p>
+            </div>
         </footer>
     </div>
 

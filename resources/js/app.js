@@ -67,3 +67,6 @@ window.flyToCart = (event, imageUrl) => {
         }
     });
 };
+
+// رجل الثلج ثلاثي الأبعاد (three.js يُحمَّل عند الحاجة فقط)
+window.initSnowman = (host) => import('./snowman').then((m) => m.mountSnowman(host)).catch(() => null);

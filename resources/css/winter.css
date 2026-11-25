@@ -1,0 +1,204 @@
+/* ===== زخارف الثيم الشتوي: ثلج، سقيع على الحواف، جليد متدلٍّ، وثلج على البطاقات ===== */
+
+/* ---------- ندف الثلج (ثلاث طبقات للعمق) ---------- */
+.snowfall { position: fixed; inset: 0; z-index: 60; overflow: hidden; pointer-events: none; }
+
+.snowfall span {
+  position: absolute;
+  top: -36px;
+  inset-inline-start: var(--x);
+  width: var(--s);
+  height: var(--s);
+  opacity: 0;
+  animation: snow-fall var(--d) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+.snowfall span::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -12 24 24'%3E%3Cg stroke='white' stroke-width='1.5' stroke-linecap='round' fill='none'%3E%3Cpath id='p' d='M0-10.5V10.5M0-6.5l-2.6-2.4M0-6.5l2.6-2.4M0 6.5l-2.6 2.4M0 6.5l2.6 2.4'/%3E%3Cuse href='%23p' transform='rotate(60)'/%3E%3Cuse href='%23p' transform='rotate(120)'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 0 3px rgb(170 210 255 / .95));
+  animation: snow-sway var(--sway) ease-in-out var(--delay) infinite alternate, snow-spin var(--spin) linear infinite;
+}
+
+/* الطبقة البعيدة: صغيرة وضبابية */
+.snowfall .is-far::before { filter: blur(1.2px) drop-shadow(0 0 2px rgb(170 210 255 / .7)); }
+/* الطبقة القريبة: كبيرة وضبابية قليلاً لإحساس العمق */
+.snowfall .is-near::before { filter: blur(.8px) drop-shadow(0 0 5px rgb(190 225 255 / 1)); }
+
+/* تظهر الندفة تدريجياً من أعلى الشاشة وتتلاشى قبل أن تصل للأسفل */
+@keyframes snow-fall {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  12%  { opacity: var(--o); }
+  85%  { opacity: var(--o); }
+  100% { transform: translate3d(var(--drift), 108vh, 0); opacity: 0; }
+}
+@keyframes snow-sway { from { transform: translateX(-14px); } to { transform: translateX(14px); } }
+@keyframes snow-spin { to { rotate: 360deg; } }
+
+/* ---------- سقيع على حواف الشاشة ---------- */
+.frost {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  opacity: 1;
+  background:
+    radial-gradient(ellipse 115% 100% at 50% 50%, transparent 52%, rgb(214 236 255 / .4) 80%, rgb(238 248 255 / .88) 100%);
+}
+
+/* بلورات الصقيع (ضجيج SVG) تظهر عند الحواف فقط */
+.frost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.045 .06' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .86  0 0 0 0 .94  0 0 0 0 1  0 0 0 1.9 -.78'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23f)'/%3E%3C/svg%3E");
+  -webkit-mask-image: radial-gradient(ellipse 115% 100% at 50% 50%, transparent 52%, #000 100%);
+  mask-image: radial-gradient(ellipse 115% 100% at 50% 50%, transparent 52%, #000 100%);
+  opacity: .95;
+}
+
+/* ---------- جليد متدلٍّ تحت الهيدر ---------- */
+html[data-theme="winter"] .site-header { position: sticky; }
+
+html[data-theme="winter"] .site-header::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: 26px;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='26' viewBox='0 0 120 26'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='1' stop-color='%23bfe0ff' stop-opacity='.75'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 0H120V4C112 4 111 12 108 22C106 12 104 4 96 4C90 4 89 9 87 15C85 9 84 4 78 4C70 4 68 18 65 26C62 14 60 4 52 4C45 4 43 10 41 17C39 9 37 4 30 4C22 4 21 8 18 13C16 8 14 4 8 4C4 4 2 4 0 4Z' fill='url(%23g)'/%3E%3C/svg%3E") repeat-x top left / 120px 26px;
+  filter: drop-shadow(0 2px 3px rgb(120 160 210 / .35));
+  z-index: -1;
+}
+
+/* ---------- ثلج مكوّم فوق البطاقات ---------- */
+html[data-theme="winter"] [data-menu-item-card],
+html[data-theme="winter"] #menu a.group,
+html[data-theme="winter"] #winter-menu a.group,
+html[data-theme="winter"] a.winter-banner {
+  position: relative;
+}
+
+html[data-theme="winter"] [data-menu-item-card]::before,
+html[data-theme="winter"] #menu a.group::before,
+html[data-theme="winter"] #winter-menu a.group::before,
+html[data-theme="winter"] a.winter-banner::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 22px;
+  z-index: 5;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='22' viewBox='0 0 160 22' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='s' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='1' stop-color='%23e3f1ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 0H160V7C152 7 150 14 144 14C138 14 137 8 130 8C122 8 121 17 113 17C106 17 105 9 98 9C90 9 89 15 82 15C75 15 74 7 66 7C58 7 57 18 49 18C42 18 41 10 34 10C27 10 25 16 18 16C11 16 9 8 0 8Z' fill='url(%23s)'/%3E%3C/svg%3E") repeat-x top / 160px 22px;
+  filter: drop-shadow(0 2px 2px rgb(120 160 210 / .35));
+}
+
+/* ---------- لمعان جليدي على الأزرار الأساسية ---------- */
+html[data-theme="winter"] .btn-hero { position: relative; overflow: hidden; }
+html[data-theme="winter"] .btn-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / .35) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: frost-shine 5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes frost-shine { 0%, 60% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .snowfall { display: none; }
+  html[data-theme="winter"] .btn-hero::after { animation: none; display: none; }
+}
+
+/* ---------- كومة الثلج تحت رجل الثلج ---------- */
+.snowman__mound {
+  position: absolute;
+  inset-inline: -22%;
+  bottom: -.55rem;
+  height: 2.6rem;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 3px 4px rgb(80 110 160 / .35));
+  transition: transform .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.snowman__mound svg { display: block; width: 100%; height: 100%; }
+.snowman__mound:hover { transform: scaleY(1.08); }
+.snowman__mound.is-squish { animation: mound-squish .5s ease; }
+@keyframes mound-squish {
+  0% { transform: scale(1, 1); }
+  25% { transform: scale(1.08, .72); }
+  55% { transform: scale(.96, 1.14); }
+  100% { transform: scale(1, 1); }
+}
+.snowman__puff {
+  position: fixed; z-index: 70; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #dcecff);
+  box-shadow: 0 0 4px rgb(170 210 255 / .9);
+  animation: snowman-puff 1s cubic-bezier(.2, .7, .3, 1) forwards;
+}
+@keyframes snowman-puff {
+  0% { opacity: 1; transform: translate(0, 0) scale(.5); }
+  45% { opacity: 1; transform: translate(calc(var(--dx) * .7), var(--dy)) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), 40px) scale(.8); }
+}
+@media (prefers-reduced-motion: reduce) { .snowman__mound.is-squish { animation: none; } }
+
+/* ---------- قاع الصفحة: تلال ثلج ناعمة وأشجار صغيرة ---------- */
+html[data-theme="winter"] footer {
+  position: relative;
+  isolation: isolate;
+  margin-top: 4.5rem;
+  border-top: 0;
+  padding-top: 3.6rem;
+  padding-bottom: 3.4rem;
+  background: linear-gradient(to bottom, #e3eefc 0%, #dcebfb 100%);
+}
+
+/* حافة الثلج العلوية: تلال ببلاط متكرر سلس وغير مشوّه (طبقتان بدورتين مختلفتين فلا يبدو التكرار) */
+.footer-drift {
+  position: absolute;
+  inset-inline: 0;
+  top: -34px;
+  height: 56px;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='54' viewBox='0 0 480 54'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='.6' stop-color='%23eef5ff'/%3E%3Cstop offset='1' stop-color='%23e3eefc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 54V40C40 40 70 30 120 24S200 8 260 10S340 28 400 36S460 40 480 40V54Z' fill='url(%23g)'/%3E%3Cpath d='M138 22C176 15 214 11 262 13' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' fill='none'/%3E%3Cpath d='M30 39C48 38 66 33 88 28' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' fill='none' opacity='.9'/%3E%3Cpath d='M330 26C356 31 380 34 410 38' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' fill='none' opacity='.9'/%3E%3Ccircle cx='190' cy='38' r='2' fill='%23bcd6f5'/%3E%3Ccircle cx='310' cy='42' r='2' fill='%23bcd6f5'/%3E%3Ccircle cx='72' cy='46' r='2' fill='%23bcd6f5'/%3E%3C/svg%3E") repeat-x left bottom / 480px 54px,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='54' viewBox='0 0 760 54'%3E%3Cpath d='M0 54V34C60 34 120 22 200 18S330 6 400 8S560 26 640 32S740 34 760 34V54Z' fill='%23dae8f9'/%3E%3C/svg%3E") repeat-x left bottom / 760px 54px;
+  filter: drop-shadow(0 -3px 4px rgb(80 110 160 / .3));
+  clip-path: inset(-14px 0 0 0);
+}
+
+html[data-theme="winter"] .footer-content { position: relative; z-index: 2; }
+html[data-theme="winter"] .footer-flake { color: #8fb8e8; font-size: .9em; display: inline-block; animation: footer-twirl 6s linear infinite; }
+@keyframes footer-twirl { to { transform: rotate(360deg); } }
+
+/* الأشجار الصغيرة */
+.footer-scene { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: visible; }
+.footer-tree { position: absolute; bottom: 14px; filter: drop-shadow(0 3px 3px rgb(70 100 150 / .25)); transform-origin: 50% 100%; animation: tree-sway 5s ease-in-out infinite alternate; }
+.footer-tree--a { inset-inline-start: 5%;  width: 64px; }
+.footer-tree--b { inset-inline-start: 13%; width: 42px; bottom: 10px; animation-delay: -1.6s; }
+.footer-tree--c { inset-inline-end: 6%;   width: 58px; animation-delay: -2.4s; }
+.footer-tree--d { inset-inline-end: 15%;  width: 38px; bottom: 10px; animation-delay: -.8s; }
+@keyframes tree-sway { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
+
+.footer-spark { position: absolute; inset-inline-start: var(--l); top: var(--t); color: #9ec6f2; font-size: .9rem; animation: footer-twinkle 3s ease-in-out var(--dl) infinite; }
+@keyframes footer-twinkle { 0%, 100% { opacity: .25; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.25); } }
+
+@media (max-width: 640px) {
+  .footer-tree--a { width: 46px; } .footer-tree--b { display: none; }
+  .footer-tree--c { width: 42px; } .footer-tree--d { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .footer-tree, .footer-spark, .footer-flake { animation: none; } }
