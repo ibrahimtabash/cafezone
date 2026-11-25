@@ -1,10 +1,12 @@
 <main class="flex-1" x-data="{ imageOpen: false, imageUrl: '', imageName: '' }"
     x-on:keydown.escape.window="imageOpen = false">
     <div>
-        <section class="relative h-72 overflow-hidden">
-            <img alt="{{ $category->name }}"
-                class="absolute inset-0 h-full w-full object-cover"
-                src="{{ Storage::url($category->image) }}">
+        @php
+            $heroDesktop = \App\Models\SiteSetting::url($category->hero_image) ?? Storage::url($category->image);
+            $heroMobile = \App\Models\SiteSetting::url($category->hero_image_mobile) ?? $heroDesktop;
+        @endphp
+        <section class="relative h-72 overflow-hidden md:h-96">
+            <x-hero-picture :desktop="$heroDesktop" :mobile="$heroMobile" :alt="$category->name" class="absolute inset-0 h-full w-full object-cover" />
             <div class="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent">
             </div>
             <div class="absolute inset-0 flex flex-col items-center justify-end pb-8 text-center">

@@ -340,3 +340,55 @@ html[data-order-alerts-enabled="true"] [data-enable-order-alerts] {
     box-shadow: var(--shadow-elegant);
   }
 }
+
+/* ===== الثيم الشتوي ===== */
+html[data-theme="winter"] {
+  --cream: oklch(0.97 0.015 230);
+  --background: oklch(0.972 0.014 235);
+  --foreground: oklch(0.24 0.05 255);
+  --card: oklch(0.992 0.006 235);
+  --card-foreground: oklch(0.24 0.05 255);
+  --popover: oklch(0.992 0.006 235);
+  --popover-foreground: oklch(0.24 0.05 255);
+  --primary: oklch(0.42 0.12 255);
+  --primary-foreground: oklch(0.98 0.01 230);
+  --gold: oklch(0.82 0.09 215);
+  --teal: oklch(0.55 0.1 220);
+  --tan: oklch(0.76 0.05 235);
+  --secondary: oklch(0.935 0.025 235);
+  --secondary-foreground: oklch(0.28 0.06 255);
+  --muted: oklch(0.935 0.02 235);
+  --muted-foreground: oklch(0.47 0.04 250);
+  --accent: oklch(0.82 0.09 215);
+  --border: oklch(0.88 0.03 235);
+  --input: oklch(0.92 0.02 235);
+  --ring: oklch(0.42 0.12 255);
+  --gradient-hero: linear-gradient(135deg, oklch(0.42 0.12 255) 0%, oklch(0.32 0.09 260) 60%, oklch(0.22 0.06 262) 100%);
+  --gradient-warm: linear-gradient(135deg, oklch(0.62 0.13 235) 0%, oklch(0.4 0.12 258) 100%);
+  --shadow-elegant: 0 25px 60px -25px oklch(0.25 0.08 255 / 0.5);
+  --shadow-soft: 0 10px 30px -15px oklch(0.42 0.12 255 / 0.3);
+}
+
+html[data-theme="winter"] body {
+  background-image:
+    radial-gradient(60rem 30rem at 85% -10%, oklch(0.93 0.04 230 / .8), transparent 70%),
+    radial-gradient(50rem 28rem at 0% 100%, oklch(0.94 0.035 225 / .7), transparent 70%);
+  background-attachment: fixed;
+}
+
+html[data-theme="winter"] .site-header { box-shadow: 0 1px 0 oklch(1 0 0 / .8), 0 8px 24px -16px oklch(0.42 0.12 255 / .35); }
+
+.snowfall { position: fixed; inset: 0; z-index: 60; overflow: hidden; pointer-events: none; }
+.snowfall span {
+  position: absolute; top: -12px; inset-inline-start: var(--x);
+  width: var(--s); height: var(--s); border-radius: 50%;
+  background: #fff; opacity: var(--o);
+  box-shadow: 0 0 6px 1px rgb(150 195 240 / .6);
+  animation: snow-fall var(--d) linear var(--delay) infinite;
+}
+@keyframes snow-fall {
+  to { transform: translate3d(var(--drift), 110vh, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snowfall { display: none; }
+}

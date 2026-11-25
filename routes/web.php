@@ -7,6 +7,7 @@ use App\Livewire\Front\CategoryPage;
 use App\Livewire\Front\HomePage;
 use App\Livewire\Front\MyOrders;
 use App\Livewire\Front\TrackOrder;
+use App\Livewire\Front\WinterPage;
 use App\Models\DiningTable;
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', HomePage::class)->name('home');
 Route::get('/category/{slug}', CategoryPage::class)
     ->name('category.show');
+Route::get('/winter', WinterPage::class)->name('winter');
 Route::get('/cart', CartPage::class)
     ->name('cart.index');
 

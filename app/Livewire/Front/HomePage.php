@@ -3,6 +3,7 @@
 namespace App\Livewire\Front;
 
 use App\Models\Category;
+use App\Models\SiteSetting;
 use Livewire\Component;
 
 class HomePage extends Component
@@ -17,6 +18,8 @@ class HomePage extends Component
             ->get();
         return view('livewire.front.home-page', [
             'categories' => $categories,
+            'hero' => SiteSetting::hero('home'),
+            'hasWinter' => $categories->contains(fn ($c) => $c->is_winter),
         ])->layout('layouts.app');
     }
 }

@@ -2,7 +2,7 @@
     <div class="overflow-hidden">
         <section class="relative isolate">
             <div class="absolute inset-0 -z-10">
-                <img alt="" class="h-full w-full object-cover" src="{{ asset('assets/images/hero-image.webp') }}">
+                <x-hero-picture :desktop="$hero[0]" :mobile="$hero[1]" />
             </div>
             <div class="mx-auto max-w-6xl px-4 py-20 sm:py-28 text-center text-cream">
                 <div
@@ -28,6 +28,9 @@
                 </div>
             </div>
         </section>
+        @if(config('cafe.winter_theme') && $hasWinter)
+            <x-winter-banner />
+        @endif
         <section id="menu" class="mx-auto max-w-6xl px-4 py-16">
             <div class="mb-10 text-center">
                 <p class="text-xs tracking-[0.3em] text-gold">MENU</p>

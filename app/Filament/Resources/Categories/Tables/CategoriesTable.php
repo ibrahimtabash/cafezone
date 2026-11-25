@@ -34,6 +34,9 @@ class CategoriesTable
                 IconColumn::make('is_active')
                     ->label('نشط')
                     ->boolean(),
+                IconColumn::make('is_winter')
+                    ->label('شتوي')
+                    ->boolean(),
                 TextColumn::make('created_at')
                     ->label('تاريخ الإنشاء')
                     ->dateTime()

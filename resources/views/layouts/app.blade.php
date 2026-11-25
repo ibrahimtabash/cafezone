@@ -1,4 +1,4 @@
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" @if(config('cafe.winter_theme')) data-theme="winter" @endif>
 
 <head>
     <meta charset="utf-8">
@@ -39,6 +39,9 @@
 </head>
 
 <body>
+    @if(config('cafe.winter_theme'))
+        <x-snowfall />
+    @endif
 
 
     <div class="min-h-screen flex flex-col">

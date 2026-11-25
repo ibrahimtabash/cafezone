@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Front;
 
+use App\Livewire\Front\Concerns\AddsToCart;
 use App\Models\Category;
-use App\Models\MenuItem;
 use Livewire\Component;
 
 class CategoryPage extends Component
 {
+    use AddsToCart;
+
     public Category $category;
 
     public function mount(string $slug)
@@ -17,30 +19,6 @@ class CategoryPage extends Component
             ->firstOrFail();
     }
 
-    public function addToCart(int $itemId): void
-    {
-        $item = MenuItem::findOrFail($itemId);
-
-        $cart = session()->get('cart', []);
-
-        if (isset($cart[$item->id])) {
-            $cart[$item->id]['quantity']++;
-        } else {
-            $cart[$item->id] = [
-                'id' => $item->id,
-                'name' => $item->name,
-                'price' => $item->price,
-                'image' => $item->image,
-                'quantity' => 1,
-            ];
-        }
-
-        session()->put('cart', $cart);
-
-        // 🔥 هذا هو الحدث اللي يخلي الكاونتر يتحدث
-        $this->dispatch('cart-updated');
-        $this->dispatch('toast', message: "تمت إضافة {$item->name} إلى السلة");
-    }
     public function render()
     {
         return view('livewire.front.category-page', [

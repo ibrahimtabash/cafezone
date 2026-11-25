@@ -13,12 +13,16 @@ class Category extends Model
         'description',
         'slug',
         'image',
+        'hero_image',
+        'hero_image_mobile',
         'sort_order',
         'is_active',
+        'is_winter',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_winter' => 'boolean',
     ];
 
     public function menuItems()
