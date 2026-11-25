@@ -121,7 +121,7 @@ html[data-theme="winter"] .btn-hero::after {
 .snowman__mound {
   position: absolute;
   inset-inline: -22%;
-  bottom: -.55rem;
+  bottom: -.9rem;
   height: 2.6rem;
   z-index: 2;
   padding: 0;
