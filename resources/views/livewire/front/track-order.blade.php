@@ -14,7 +14,7 @@
     $paymentLabel = ['pending' => 'بانتظار مراجعة الكاشير', 'confirmed' => 'تم تأكيد الدفع', 'rejected' => 'يحتاج إعادة مراجعة', 'unpaid' => 'غير مدفوع'][$order->payment_status] ?? $order->payment_status;
 @endphp
 
-<main class="relative overflow-hidden bg-[radial-gradient(circle_at_top_right,rgba(120,53,15,.10),transparent_35%)]" wire:poll.30s data-order-token="{{ $token }}">
+<main class="relative flex-1 overflow-hidden bg-[radial-gradient(circle_at_top_right,rgba(120,53,15,.10),transparent_35%)]" wire:poll.30s data-order-token="{{ $token }}">
     <div class="mx-auto w-full max-w-5xl px-4 py-5 sm:py-7">
         <div class="mb-4 flex items-end justify-between gap-3">
             <div>

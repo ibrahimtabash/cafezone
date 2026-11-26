@@ -1,4 +1,4 @@
-<main class="mx-auto w-full max-w-3xl px-4 py-10" wire:poll.30s>
+<main class="mx-auto w-full max-w-3xl flex-1 px-4 py-10" wire:poll.30s>
     <h1 class="text-3xl font-bold text-primary">طلباتي</h1>
     <p class="mt-3 text-sm text-muted-foreground">طلباتك المحفوظة على هذا المتصفح لمدة 30 يوماً. اضغط على الطلب لمتابعته مباشرة.</p>
     <div class="mt-6 space-y-4">
